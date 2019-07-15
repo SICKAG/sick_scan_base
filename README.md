@@ -2,7 +2,7 @@
 # FIRST VERSION WILL BE PUBLISHED IN AUGUST 2019
 # sick_scan_base
 
-This tool box contains a generic C++ driver for the SICK laser mentioned in the following list.
+This tool box contains a generic C++ driver (under Linux) for the SICK laser mentioned in the following list.
 
 ## Table of Contents
 

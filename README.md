@@ -26,7 +26,7 @@ make
 
 1. Start software e.g. with
 ```console
-sick_generic_call ./launch/sick_tim_5xx.launch hostname:=192.168.0.72
+sick_generic_call ./launch/sick_mrs_1xxx.launch hostname:=192.168.0.72
 ```
 
 ## Check results

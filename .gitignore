@@ -1,0 +1,51 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+\.idea/
+
+CMakeFiles/3\.10\.2/
+
+CMakeFiles/3\.12\.1/
+
+CMakeCache\.txt
+
+CMakeFiles/
+
+sick_scan_base\.cbp
+
+cmake_install\.cmake
+
+Makefile
+
+sick_generic_caller
+*.jpg

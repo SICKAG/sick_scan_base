@@ -129,6 +129,18 @@ scan your network (for example, subnet 192.168.10.0/24):
 ```
 search for all ip addresses from 192.168.0.0 to 192.168.0.255
 
+The result is similar to:
+```bash
+192.168.0.4 is alive
+192.168.0.22 is alive
+```
+and a lot of unreachable entries.
+In the example the ip address 192.168.0.4 is the laserscanner MRS1104 and the ip address 192.168.0.22 is the computer running linux (check this with
+```bash
+ifconfig|grep 192.168.0.22
+```
+
+
 :question: Question: 
 My scanners  do not use the default ip address. How can I parse the scanner ip address to the tool?
 
@@ -146,6 +158,18 @@ Use a command line argument in addition the launch file:
 ```bash
    hostname:=192.168.0.2
 ```
+
+:question: Question: 
+During start phase the are warning/error message like
+```bash
+no answer received after 5000 ms. Maybe sopas mode is wrong.
+```
+and some more warning/error messages:
+
+:white_check_mark: Answer: 
+In this case the driver tries to start the scanner in binary mode. If this is not possible, warnings and error messages are generated. 
+The driver switches the scanner from ASCII mode to binary mode and then restarts communication. The messages can therefore be ignored. 
+For a long-term solution, we recommend switching from ASCII to binary communication with SOPAS ET under Windows.
 
 ## Creators
 

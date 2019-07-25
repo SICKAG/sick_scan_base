@@ -113,7 +113,7 @@ My scanners  do not use the default ip address. How can I parse the scanner ip a
 :white_check_mark: Answer: 
 There are two options doing this:
 * Permanently:  
-Replease the following entry with your ip address.
+Replace the following entry with your ip address.
 ```bash
   <param name="hostname" type="string" value="192.168.0.1" />
 ```

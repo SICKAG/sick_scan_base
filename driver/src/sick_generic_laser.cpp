@@ -189,12 +189,14 @@ int mainGenericLaser(int argc, char **argv, std::string nodeName)
   bool doInternalDebug = false;
   bool emulSensor = false;
 
+  int launchArgcFileIdx = -1;
   for (int i = 1; i < argc; i++)
   {
     std::string extKey = ".launch";
     std::string s = argv[i];
     if (ends_with(s, extKey))
     {
+      launchArgcFileIdx = i;
       std::vector<std::string> tagList, typeList, valList;
       LaunchParser launchParser;
       bool ret = launchParser.parseFile(s, tagList, typeList, valList);
@@ -211,12 +213,21 @@ int mainGenericLaser(int argc, char **argv, std::string nodeName)
     }
   }
 
-  for (int i = 0; i < argc; i++)
+  for (int i = 1; i < argc; i++)
   {
     std::string s = argv[i];
     if (getTagVal(s, tag, val))
     {
       nhPriv.setParam(tag, val);
+    }
+    else
+    {
+      if (launchArgcFileIdx != i)
+      {
+        ROS_INFO("Tag-Value setting not valid. Use pattern: <tag>:=<value>  (e.g. hostname:=192.168.0.4) (Check the entry: %s)\n", s.c_str());
+        exit(-1);
+
+      }
     }
   }
 

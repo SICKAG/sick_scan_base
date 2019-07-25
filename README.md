@@ -32,13 +32,13 @@ make
 sick_generic_caller ./launch/sick_mrs_1xxx.launch hostname:=192.168.0.72
 ```
 
-In genereal the software starts with the following options:
+In general the software starts with the following options:
 
 ```console
-sick_generic_caller <launch-file> <tag1>:=<value1> <tag2>:=<value>
+sick_generic_caller <launch-file> [<tag1>:=<value1>] [<tag2>:=<value>] ... [<tagn>:=<valuen>]
 ```
 
-The tag/value pairs overwrite the setting in the launch file.
+The tag/value pairs overwrite the settings in the launch file.
 
 ## Check results
 The software starts, connects to the scanner and writes data to the demo directory at regular intervals.
@@ -51,11 +51,11 @@ For the launch-file settings and the tag/values pairs the following keywords are
 
 | Keyword      |     Meaning     |  Default value |    Hint       |
 |--------------|-----------------|----------------|---------------|
-| scanner_type |  Scanner family |  ???           | "sick_mrs_1xxx" is the only one currenty supported. |
+| scanner_type |  Scanner family |  ???           | "sick_mrs_1xxx" is the only one currently supported. |
 | min_ang      |  Start scan angle in [rad] |  -2.3998277           |  |
 | max_ang      |  End scan angle in [rad] |  +2.3998277           |  |
-| intensity_resolution_16bit | Switch between 8Bit/16Bit| "false" | |
-| hostname | Ip address of scanner  | 192.168.0.1 |  |
+| intensity_resolution_16bit | Switch between 8Bit/16Bit| "false" | do not change|
+| hostname | Ip address of scanner  | 192.168.0.1 | change to scanner ip address in your network (see faq) |
 | port | port number  | 2112 | do not change, check firewall rules if there is blocking traffic  |
 | timelimit | Timelinit in [sec]   | 5 | do not change  |
     
@@ -125,9 +125,9 @@ apt-get install fping
 
 scan your network (for example, subnet 192.168.10.0/24):
 ```bash
-fping -g 192.168.10.0/24
+192.168.0.1/24
 ```
-search for all ip addresses from 192.168.10.0 to 192.168.10.255
+search for all ip addresses from 192.168.0.0 to 192.168.0.255
 
 :question: Question: 
 My scanners  do not use the default ip address. How can I parse the scanner ip address to the tool?

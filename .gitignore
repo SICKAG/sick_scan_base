@@ -48,4 +48,5 @@ cmake_install\.cmake
 Makefile
 
 sick_generic_caller
-*.jpg
+scan.jpg
+scan_tmp.jpg

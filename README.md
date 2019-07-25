@@ -43,7 +43,6 @@ The tag/value pairs overwrite the settings in the launch file.
 ## Check results
 The software starts, connects to the scanner and writes data to the demo directory at regular intervals.
 It generates a top view scan image and a csv data file.
-The HTML file demo/image_viewer.html can be loaded into your favorite browser for checking purposes. The generated scan image is then shown in the browser.
 
 The HTML file image_viewer.html can be loaded into your favorite browser for checking purposes. The generated scan image is then shown in the browser.
 

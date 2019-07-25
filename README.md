@@ -24,17 +24,41 @@ make
 
 
 
+
 ## Running
 
 1. Start software e.g. with
 ```console
-sick_generic_call ./launch/sick_mrs_1xxx.launch hostname:=192.168.0.72
+sick_generic_caller ./launch/sick_mrs_1xxx.launch hostname:=192.168.0.72
 ```
+
+In genereal the software starts with the following options:
+
+```console
+sick_generic_caller <launch-file> <tag1>:=<value1> <tag2>:=<value>
+```
+
+The tag/value pairs overwrite the setting in the launch file.
 
 ## Check results
 The software starts, connects to the scanner and writes data to the demo directory at regular intervals.
 The HTML file image_viewer.html can be loaded into your favorite browser for checking purposes. The generated scan image is then shown in the browser.
 
+
+## Parameters
+
+For the launch-file settings and the tag/values pairs the following keywords are supported:
+
+| Keyword      |     Meaning     |  Default value |    Hint       |
+|--------------|-----------------|----------------|---------------|
+| scanner_type |  Scanner family |  ???           | "sick_mrs_1xxx" is the only one currenty supported. |
+| min_ang      |  Start scan angle in [rad] |  -2.3998277           |  |
+| max_ang      |  End scan angle in [rad] |  +2.3998277           |  |
+| intensity_resolution_16bit | Switch between 8Bit/16Bit| "false" | |
+| hostname | Ip address of scanner  | 192.168.0.1 |  |
+| port | port number  | 2112 | do not change, check firewall rules if there is blocking traffic  |
+| timelimit | Timelinit in [sec]   | 5 | do not change  |
+    
 ## Keywords
 
 MRS1104

@@ -62,7 +62,7 @@ For the launch-file settings and the tag/values pairs the following keywords are
 | intensity_resolution_16bit | Switch between 8Bit/16Bit| "false" | do not change|
 | hostname | Ip address of scanner  | 192.168.0.1 | change to scanner ip address in your network (see faq) |
 | port | port number  | 2112 | do not change, check firewall rules if there is blocking traffic  |
-| timelimit | Timelinit in [sec]   | 5 | do not change  |
+| timelimit | Timelimit in [sec]   | 5 | do not change  |
     
 ## Keywords
 
@@ -144,6 +144,7 @@ In the example the ip address 192.168.0.4 is the laserscanner MRS1104 and the ip
 ```bash
 ifconfig|grep 192.168.0.22
 ```
+### IP Address of Laser Scanner
 
 
 :question: Question: 
@@ -164,6 +165,8 @@ Use a command line argument in addition to the launch file argument:
    hostname:=192.168.0.2
 ```
 
+### Timeout Warning
+
 :question: Question: 
 During start phase the are warning/error message like
 ```bash
@@ -175,6 +178,8 @@ and some more warning/error messages:
 In this case the driver tries to start the scanner in binary mode. If this is not possible, warnings and error messages are generated. 
 The driver switches the scanner from ASCII mode to binary mode and then restarts communication. The messages can therefore be ignored. 
 For a long-term solution, we recommend switching from ASCII to binary communication with SOPAS ET under Windows.
+
+### Own Data Handling
 
 :question: Question: 
 I would like to process data with my own methods.

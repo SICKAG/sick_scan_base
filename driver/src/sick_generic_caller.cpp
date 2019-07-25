@@ -54,10 +54,7 @@
 *
 *      Authors:
 *         Michael Lehning <michael.lehning@lehning.de>
-*         Jochen Sprickerhof <jochen@sprickerhof.de>
-*         Martin Günther <mguenthe@uos.de>
 *
-* Based on the TiM communication example by SICK AG.
 *
 *
 *
@@ -123,38 +120,6 @@
 
 FILE *fout;
 
-void jpegOutputScanCallback(unsigned char oneByte)
-{
-  fwrite(&oneByte, 1, 1, fout);
-}
-
-void genereateTestJpeg()
-{
-  int w = 201;
-  int h = 201;
-
-  fout = fopen("./demo/test.jpg", "wb");
-  unsigned char *pixelData = (unsigned char *) malloc(w * h * sizeof(unsigned char));
-
-  for (int i = 0; i < h; i++)
-  {
-    for (int j = 0; j < w; j++)
-    {
-      pixelData[i * w + j] = 0x00;
-      if (i == 100)
-      {
-        pixelData[i * w + j] = 0x40;
-      }
-      if (j == 100)
-      {
-        pixelData[i * w + j] = 0x40;
-      }
-    }
-  }
-  TooJpeg::writeJpeg(jpegOutputScanCallback, pixelData, w, h, false, 99);
-  fclose(fout);
-}
-
 std::string getVersionInfo();
 
 /*!
@@ -169,10 +134,6 @@ std::string getVersionInfo();
 */
 int main(int argc, char **argv)
 {
-
-  genereateTestJpeg();
-
-  DataDumper::instance().writeToFileNameWhenBufferIsFull("/tmp/sickscan_debug.csv");
   char nameId[] = "__name:=";
   char nameVal[MAX_NAME_LEN] = {0};
   char **argv_tmp; // argv_tmp[0][0] argv_tmp[0] identisch ist zu (*argv_tmp)
@@ -192,22 +153,8 @@ int main(int argc, char **argv)
 
   if (argc == 1) // just for testing without calling by roslaunch
   {
-    // recommended call for internal debugging as an example: __name:=sick_rms_320 __internalDebug:=1
-    // strcpy(nameTagVal, "__name:=sick_rms_3xx");  // sick_rms_320 -> radar
-    strcpy(nameTagVal, "__name:=sick_tim_5xx");  // sick_rms_320 -> radar
-    strcpy(logTagVal, "__log:=/tmp/tmp.log");
-    strcpy(internalDebugTagVal, "__internalDebug:=1");
-    // strcpy(sensorEmulVal, "__emulSensor:=1");
-    strcpy(sensorEmulVal, "__emulSensor:=0");
-    argc_tmp = 5;
-    argv_tmp = (char **) malloc(sizeof(char *) * argc_tmp);
-
-    argv_tmp[0] = argv[0];
-    argv_tmp[1] = nameTagVal;
-    argv_tmp[2] = logTagVal;
-    argv_tmp[3] = internalDebugTagVal;
-    argv_tmp[4] = sensorEmulVal;
-
+    ROS_INFO("Missing <launchfile>. Please start with ./sick_generic_caller <launchfile>\n");
+    exit(-1);
   }
   //
   std::string versionInfo = "sick_generic_caller V. ";

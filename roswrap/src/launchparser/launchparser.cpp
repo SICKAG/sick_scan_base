@@ -208,7 +208,7 @@ bool LaunchParser::parseFile(std::string launchFileFullName, std::vector<std::st
     std::vector<std::string>& typeVec, std::vector<std::string>& valVec)
 {
   bool ret = false;
-  printf("Try loading launchfile :%s",launchFileFullName.c_str());
+  ROS_INFO("Try loading launchfile :%s",launchFileFullName.c_str());
   TiXmlDocument doc;
   doc.LoadFile(launchFileFullName.c_str());
 

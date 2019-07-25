@@ -3197,7 +3197,7 @@ namespace sick_scan
                   pub_.publish(msg);
                 }
 #else
-                printf("MSG received...");
+                // printf("MSG received...");
 #endif
               }
             }
@@ -3360,7 +3360,7 @@ namespace sick_scan
                 static int cnt = 0;
                 cnt++;
 
-                printf("PUBLISH:\n");
+                printf("PUBLISH_DATA:\n");
 
                 unsigned char *cloudDataPtr = &(cloud_.data[0]);
                 int w = cloud_.width;
@@ -3440,18 +3440,25 @@ namespace sick_scan
 
                 }
 
-                if (cnt == 5)
+                if (cnt == 25)
                 {
+                  const char *jpgFileName_tmp = "./demo/scan.jpg_tmp";
                   // Write JPEG Scan Top View
-                  foutJpg = fopen("./demo/scan.jpg_tmp", "wb");
+                  foutJpg = fopen(jpgFileName_tmp, "wb");
+                  if (foutJpg == NULL)
+                  {
+                    ROS_INFO("PANIC: Can not open %s for writing. Check existience of demo dir. or patch  code.\n", jpgFileName_tmp);
+                  }
+                  else
+                  {
                   TooJpeg::writeJpeg(jpegOutputCallback, pixel, wi, hi, true, 99);
                   fclose(foutJpg);
                   free(pixel);
-                  rename("./demo/scan.jpg_tmp", "./demo/scan.jpg");
-
+                  rename(jpgFileName_tmp, "./demo/scan.jpg");
+                  }
                   // Write CSV-File
-
-                  FILE *foutCsv = fopen("./demo/scan.csv_tmp", "w");
+                  const char *csvFileNameTmp = "./demo/scan.csv_tmp";
+                  FILE *foutCsv = fopen(csvFileNameTmp, "w");
                   if (foutCsv)
                   {
                     // ZIEL: fprintf(foutCsv,"timestamp;range;elevation;azimuth;x;y;z;intensity\n");
@@ -3483,9 +3490,13 @@ namespace sick_scan
                       fprintf(foutCsv,"%12ld;%12ld;%8.3lf;%8.3lf;%8.3lf;%8.3f;%8.3f;%8.3f;%8.0f\n", timestamp_sec, timestamp_nanosec, range_xyz, azimuthDeg, elevationDeg, x,z,y,intensity);
                     }
                       fclose(foutCsv);
-                  }
-                  rename("./demo/scan.csv_tmp", "./demo/scan.csv");
 
+                     rename(csvFileNameTmp, "./demo/scan.csv");
+                  }
+                  else
+                  {
+                        ROS_INFO("PANIC: Can not open %s for writing. Check existience of demo dir. or patch  code.\n",csvFileNameTmp );
+                  }
                   cnt = 0;
                 }
 

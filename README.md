@@ -42,7 +42,12 @@ The tag/value pairs overwrite the settings in the launch file.
 
 ## Check results
 The software starts, connects to the scanner and writes data to the demo directory at regular intervals.
+It generates a top view scan image and a csv data file.
+The HTML file demo/image_viewer.html can be loaded into your favorite browser for checking purposes. The generated scan image is then shown in the browser.
+
 The HTML file image_viewer.html can be loaded into your favorite browser for checking purposes. The generated scan image is then shown in the browser.
+
+You can find reference outputs in the demo directory.
 
 
 ## Parameters
@@ -135,14 +140,14 @@ The result is similar to:
 192.168.0.22 is alive
 ```
 and a lot of unreachable entries.
-In the example the ip address 192.168.0.4 is the laserscanner MRS1104 and the ip address 192.168.0.22 is the computer running linux (check this with
+In the example the ip address 192.168.0.4 is the laserscanner MRS1104 and the ip address 192.168.0.22 is the computer running linux. Check this with
 ```bash
 ifconfig|grep 192.168.0.22
 ```
 
 
 :question: Question: 
-My scanners  do not use the default ip address. How can I parse the scanner ip address to the tool?
+My scanner does not use the default ip address. What shall I do?
 
 
 
@@ -154,7 +159,7 @@ Replace the following entry with your ip address.
   <param name="hostname" type="string" value="192.168.0.1" />
 ```
 * Temporarily  
-Use a command line argument in addition the launch file:
+Use a command line argument in addition to the launch file argument:
 ```bash
    hostname:=192.168.0.2
 ```
@@ -170,6 +175,18 @@ and some more warning/error messages:
 In this case the driver tries to start the scanner in binary mode. If this is not possible, warnings and error messages are generated. 
 The driver switches the scanner from ASCII mode to binary mode and then restarts communication. The messages can therefore be ignored. 
 For a long-term solution, we recommend switching from ASCII to binary communication with SOPAS ET under Windows.
+
+:question: Question: 
+I would like to process data with my own methods.
+
+
+:white_check_mark: Answer: 
+Search for keyword "PUBLISH_DATA:" in the code and replace the code for writing
+jpeg-files and CSV-files with your own source code.
+
+## Known Issues
+
+* The intensity values in the csv demo file are currently 0.
 
 ## Creators
 

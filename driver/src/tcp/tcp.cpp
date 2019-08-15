@@ -54,10 +54,13 @@ bool Tcp::write(UINT8* buffer, UINT32 numberOfBytes)
 	bool result;
 #ifdef _MSC_VER
 	SOCKET* socketPtr = &m_connectionSocket;
-	bytesSent = ::send(*socketPtr, (const char*)buffer, numberOfBytes, 0);
+	bytesSent = ::send(*socketPtr, (const char*)buffer, numberOfBytes, MSG_NOSIGNAL);
 #else
 	INT32* socketPtr = &m_connectionSocket;
-	bytesSent = ::send(*socketPtr, buffer, numberOfBytes, 0);
+	//flag MSG_NOSIGNAL prevents SIGPIPE when using lms_5xx scanners
+	//this scanner closes the thcp ip connection when changig sopas mode witch can result in SIGPIPE if an packed is sent in this time
+	//see https://stackoverflow.com/questions/108183/how-to-prevent-sigpipes-or-handle-them-properly
+	bytesSent = ::send(*socketPtr, buffer, numberOfBytes, MSG_NOSIGNAL);
 #endif	
 	// Sende Daten an das Socket
 	if (bytesSent != (INT32)numberOfBytes)

@@ -62,7 +62,7 @@ For the launch-file settings and the tag/values pairs the following keywords are
 | hostname | Ip address of scanner  | 192.168.0.1 | change to scanner ip address in your network (see faq) |
 | port | port number  | 2112 | do not change, check firewall rules if there is blocking traffic  |
 | timelimit | Timelimit in [sec]   | 5 | do not change  |
-    
+
 ## Keywords
 
 MRS1104
@@ -96,24 +96,24 @@ The software is very similar to the ROS driver sick_scan. For FAQ and troublesho
 
 ### "ERROR: Tcp::open: Failed to open TCP connection to 192.168.0.1, aborting."
 
-:question: Question: 
+:question: Question:
 sick_generic_caller gives you an answer like:
 ```bash
 "ERROR: Tcp::open: Failed to open TCP connection to 192.168.0.1, aborting."
 ```
 
 
-:white_check_mark: Answer: 
+:white_check_mark: Answer:
 1. Try to ping your device:
    ```bash
    ping 192.168.0.1
    ```
-2. Disconnect your scanner and retry ping 
-   
+2. Disconnect your scanner and retry ping
+
    ```bash
    ping 192.168.0.1
    ```  
-   The result of ping contains a pattern like 
+   The result of ping contains a pattern like
    ```bash
     ... Destination Host Unreachable
    ```
@@ -146,12 +146,12 @@ ifconfig|grep 192.168.0.22
 ### IP Address of Laser Scanner
 
 
-:question: Question: 
+:question: Question:
 My scanner does not use the default ip address. What shall I do?
 
 
 
-:white_check_mark: Answer: 
+:white_check_mark: Answer:
 There are two options doing this:
 * Permanently:  
 Replace the following entry with your ip address.
@@ -166,31 +166,32 @@ Use a command line argument in addition to the launch file argument:
 
 ### Timeout Warning
 
-:question: Question: 
+:question: Question:
 During start phase the are warning/error message like
 ```bash
 no answer received after 5000 ms. Maybe sopas mode is wrong.
 ```
 and some more warning/error messages:
 
-:white_check_mark: Answer: 
-In this case the driver tries to start the scanner in binary mode. If this is not possible, warnings and error messages are generated. 
-The driver switches the scanner from ASCII mode to binary mode and then restarts communication. The messages can therefore be ignored. 
+:white_check_mark: Answer:
+In this case the driver tries to start the scanner in binary mode. If this is not possible, warnings and error messages are generated.
+The driver switches the scanner from ASCII mode to binary mode and then restarts communication. The messages can therefore be ignored.
 For a long-term solution, we recommend switching from ASCII to binary communication with SOPAS ET under Windows.
 
 ### Own Data Handling
 
-:question: Question: 
+:question: Question:
 I would like to process data with my own methods.
 
 
-:white_check_mark: Answer: 
+:white_check_mark: Answer:
 Search for keyword "PUBLISH_DATA:" in the code and replace the code for writing
 jpeg-files and CSV-files with your own source code.
 
 ## Known Issues
 
 * The intensity values in the csv demo file are currently 0.
+* If the scanner type is not selected correctly in the launchfile (e.g. launch->mrs_1xxx hardware->tim_5xx) starts the software and then crashes when receiving the first packet with a "bad pointer".
 
 ## Creators
 

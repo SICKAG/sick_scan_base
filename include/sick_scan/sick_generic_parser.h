@@ -45,6 +45,7 @@
 #define SICK_SCANNER_LMS_1XX_NAME "sick_lms_1xx"
 #define SICK_SCANNER_MRS_6XXX_NAME "sick_mrs_6xxx"
 #define SICK_SCANNER_RMS_3XX_NAME "sick_rms_3xx"
+#define SICK_SCANNER_LMS_4XXX_NAME "sick_lms_4xxx"
 #include "abstract_parser.h"
 
 #include "sensor_msgs/LaserScan.h"

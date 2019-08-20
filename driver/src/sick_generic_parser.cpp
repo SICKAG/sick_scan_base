@@ -343,6 +343,7 @@ namespace sick_scan
     allowedScannerNames.push_back(SICK_SCANNER_LMS_1XX_NAME);
     allowedScannerNames.push_back(SICK_SCANNER_LMS_1XXX_NAME);
     allowedScannerNames.push_back(SICK_SCANNER_MRS_6XXX_NAME);
+    allowedScannerNames.push_back(SICK_SCANNER_LMS_4XXX_NAME);
     allowedScannerNames.push_back(SICK_SCANNER_RMS_3XX_NAME); // Radar scanner
     basicParams.resize(allowedScannerNames.size()); // resize to number of supported scanner types
     for (size_t i = 0; i <
@@ -385,6 +386,17 @@ namespace sick_scan
         basicParams[i].setNumberOfShots(811);
         basicParams[i].setAngularDegreeResolution(0.3333);
         basicParams[i].setExpectedFrequency(15.0);
+        basicParams[i].setUseBinaryProtocol(true);
+        basicParams[i].setDeviceIsRadar(false); // Default
+        basicParams[i].setUseSaftyPasWD(false); // Default
+      }
+      if (basicParams[i].getScannerName().compare(SICK_SCANNER_LMS_4XXX_NAME) == 0) // LMS_4xxx - 1 Layer, 600 Hz
+      {
+        basicParams[i].setNumberOfMaximumEchos(1);
+        basicParams[i].setNumberOfLayers(1);
+        basicParams[i].setNumberOfShots(841);//
+        basicParams[i].setAngularDegreeResolution(0.0833);//
+        basicParams[i].setExpectedFrequency(600.0);
         basicParams[i].setUseBinaryProtocol(true);
         basicParams[i].setDeviceIsRadar(false); // Default
         basicParams[i].setUseSaftyPasWD(false); // Default

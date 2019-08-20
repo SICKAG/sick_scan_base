@@ -213,56 +213,56 @@ namespace ros
 
 }
 
-void __cdecl ros::init(int &, char * *, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> > const &, unsigned int)
+void ros::init(int &, char * *, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> > const &, unsigned int)
     {
 
 }
 
-void __cdecl ros::console::initialize(void)
+void ros::console::initialize(void)
 {
 }
 
-void __cdecl ros::console::print(class ros::console::FilterBase *, void *, enum ros::console::levels::Level, char const *, int, char const *, char const *, ...)
+void ros::console::print(class ros::console::FilterBase *, void *, enum ros::console::levels::Level, char const *, int, char const *, char const *, ...)
 {
 }
 
-void __cdecl ros::console::setLogLocationLevel(struct ros::console::LogLocation *, enum ros::console::levels::Level)
-{
-
-}
-
-void __cdecl ros::console::checkLogLocationEnabled(struct ros::console::LogLocation *)
+void ros::console::setLogLocationLevel(struct ros::console::LogLocation *, enum ros::console::levels::Level)
 {
 
 }
 
-void __cdecl ros::spinOnce(void)
+void ros::console::checkLogLocationEnabled(struct ros::console::LogLocation *)
 {
 
 }
 
-void __cdecl ros::spin(void) // difference between spinOnce and spin?
+void ros::spinOnce(void)
 {
 
 }
 
-void __cdecl ros::shutdown(void)
+void ros::spin(void) // difference between spinOnce and spin?
 {
 
 }
-bool __cdecl ros::ok(void)
+
+void ros::shutdown(void)
+{
+
+}
+bool ros::ok(void)
 {
 	return(true);
 }
-__cdecl ros::NodeHandle::~NodeHandle(void)
+ros::NodeHandle::~NodeHandle(void)
 {
 }
 
-__cdecl ros::Subscriber::~Subscriber(void)
+ros::Subscriber::~Subscriber(void)
 {
 }
 
-ros::Subscriber __cdecl ros::NodeHandle::subscribe(struct ros::SubscribeOptions &)
+ros::Subscriber ros::NodeHandle::subscribe(struct ros::SubscribeOptions &)
 {
 	ros::Subscriber s;
 	return(s);
@@ -270,16 +270,16 @@ ros::Subscriber __cdecl ros::NodeHandle::subscribe(struct ros::SubscribeOptions 
 
 
 
-__cdecl ros::Publisher::Publisher(class ros::Publisher const &)
+ros::Publisher::Publisher(class ros::Publisher const &)
 {
 	// printf("Publisher constructor called\n");
 }
 
-__cdecl ros::Publisher::~Publisher(void)
+ros::Publisher::~Publisher(void)
 {
 }
 
-__cdecl ros::Subscriber::Subscriber(class ros::Subscriber const &)
+ros::Subscriber::Subscriber(class ros::Subscriber const &)
 {
 }
 
@@ -287,89 +287,89 @@ bool ros::NodeHandle::getParamCached(const std::string& key, double& d) const
 {
 	return(true);
 }
-bool __cdecl ros::Publisher::Impl::isValid(void)const
+bool ros::Publisher::Impl::isValid(void)const
 {
 	return(true);
 }
 
-void __cdecl ros::Publisher::publish(class boost::function<class ros::SerializedMessage __cdecl(void)> const &, class ros::SerializedMessage &)const
+void ros::Publisher::publish(class boost::function<class ros::SerializedMessage __cdecl(void)> const &, class ros::SerializedMessage &)const
 {
 
 }
 
-void __cdecl ros::serialization::throwStreamOverrun(void)
+void ros::serialization::throwStreamOverrun(void)
 {
 
 }
 
-__cdecl ros::ServiceServer::~ServiceServer(void)
+ros::ServiceServer::~ServiceServer(void)
 {
 
 }
 
-__cdecl ros::NodeHandle::NodeHandle(class ros::NodeHandle const &)
+ros::NodeHandle::NodeHandle(class ros::NodeHandle const &)
 {
 }
 
-bool __cdecl ros::NodeHandle::ok(void)const
+bool ros::NodeHandle::ok(void)const
 {
 	return(true);
 }
 
-std::string const & __cdecl ros::this_node::getName(void)
+std::string const & ros::this_node::getName(void)
 {
 
 	return(unknownNode);
 }
 
 
-class ros::Publisher __cdecl ros::NodeHandle::advertise(struct ros::AdvertiseOptions &opt)
+class ros::Publisher ros::NodeHandle::advertise(struct ros::AdvertiseOptions &opt)
 {
 	ros::Publisher p;
 	return(p);
 }
 
-void __cdecl ros::console::print(class ros::console::FilterBase *, void *, enum ros::console::levels::Level, class std::basic_stringstream<char, struct std::char_traits<char>, class std::allocator<char> > const &, char const *, int, char const *)
+void ros::console::print(class ros::console::FilterBase *, void *, enum ros::console::levels::Level, class std::basic_stringstream<char, struct std::char_traits<char>, class std::allocator<char> > const &, char const *, int, char const *)
 {
 
 }
 
-class ros::ServiceServer __cdecl ros::NodeHandle::advertiseService(struct ros::AdvertiseServiceOptions &)
+class ros::ServiceServer ros::NodeHandle::advertiseService(struct ros::AdvertiseServiceOptions &)
 {
 	ros::ServiceServer server;
 	return(server);
 }
 
-__cdecl sick_scan::AbstractParser::AbstractParser(void)
+sick_scan::AbstractParser::AbstractParser(void)
 {
 
 }
 	
-__cdecl sick_scan::AbstractParser::~AbstractParser(void)
+sick_scan::AbstractParser::~AbstractParser(void)
 {
 }
 
-void __cdecl ros::console::initializeLogLocation(struct ros::console::LogLocation *, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> > const &, enum ros::console::levels::Level)
+void ros::console::initializeLogLocation(struct ros::console::LogLocation *, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> > const &, enum ros::console::levels::Level)
 {
 }
 
-bool __cdecl ros::NodeHandle::hasParam(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> > const &)const
+bool ros::NodeHandle::hasParam(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> > const &)const
 {
 	return(true);
 }
 
 
-__cdecl ros::NodeHandle::NodeHandle(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> > const &, class std::map<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> >, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> >, struct std::less<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> > >, class std::allocator<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> > const, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> > > > > const &)
+ros::NodeHandle::NodeHandle(class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> > const &, class std::map<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> >, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> >, struct std::less<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> > >, class std::allocator<struct std::pair<class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> > const, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> > > > > const &)
 {
 }
 
-std::string __cdecl ros::Publisher::getTopic(void)const
+std::string ros::Publisher::getTopic(void)const
 {
 	std::string s;
 	return(s);
 }
 
-__cdecl ros::ServiceServer::ServiceServer(class ros::ServiceServer const &)
+ros::ServiceServer::ServiceServer(class ros::ServiceServer const &)
 {
 
 }

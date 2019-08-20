@@ -94,6 +94,7 @@ int DataDumper::dumpUcharBufferToConsole(unsigned char *buffer, int bufLen)
 
     printf("%s\n", asciiBuffer);
   }
+  return(0);
 }
 
 int DataDumper::testbed()

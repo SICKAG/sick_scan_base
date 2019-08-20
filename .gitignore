@@ -50,3 +50,5 @@ Makefile
 sick_generic_caller
 scan.jpg
 scan_tmp.jpg
+
+build/

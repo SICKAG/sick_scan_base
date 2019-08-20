@@ -142,7 +142,7 @@ namespace sick_scan
     int posTrial[] = {0, 1, 8};
     for (int iPos = 0; iPos < sizeof(posTrial) / sizeof(posTrial[0]); iPos++)
 
-      if (datagram_length >= (keyWordLen + posTrial[iPos])) // 8 Bytes preheader
+      if (datagram_length >= (size_t)(keyWordLen + posTrial[iPos])) // 8 Bytes preheader
       {
         cmpKeyWord = "";
         for (int i = 0; i < keyWordLen; i++)
@@ -177,7 +177,7 @@ namespace sick_scan
     std::string szKeyWord = "sSN InertialMeasurementUnit";
     std::string cmpKeyWord = "";
     int keyWordLen = szKeyWord.length();
-    if (datagram_length >= (keyWordLen + 8)) // 8 Bytes preheader
+    if (datagram_length >= (size_t)(keyWordLen + 8)) // 8 Bytes preheader
     {
       for (int i = 0; i < keyWordLen; i++)
       {
@@ -273,7 +273,7 @@ namespace sick_scan
   {
     bool isImuMsg = false;
     std::string szKeyWord = "sSN InertialMeasurementUnit";
-    int keyWordLen = szKeyWord.length();
+    size_t keyWordLen = szKeyWord.length();
     if (datagram_length >= keyWordLen)
     {
 

@@ -345,7 +345,7 @@ namespace sick_scan
     allowedScannerNames.push_back(SICK_SCANNER_MRS_6XXX_NAME);
     allowedScannerNames.push_back(SICK_SCANNER_RMS_3XX_NAME); // Radar scanner
     basicParams.resize(allowedScannerNames.size()); // resize to number of supported scanner types
-    for (int i = 0; i <
+    for (size_t i = 0; i <
                     basicParams.size(); i++) // set specific parameter for each scanner type - scanner type is identified by name
     {
       basicParams[i].setDeviceIsRadar(false); // Default
@@ -490,7 +490,7 @@ namespace sick_scan
   int SickGenericParser::lookUpForAllowedScanner(std::string scannerName)
   {
     int iRet = -1;
-    for (int i = 0; i < allowedScannerNames.size(); i++)
+    for (size_t i = 0; i < allowedScannerNames.size(); i++)
     {
       if (allowedScannerNames[i].compare(scannerName) == 0)
       {
@@ -542,7 +542,7 @@ namespace sick_scan
       return ExitError;
     }
 
-    int offset = 20;
+    size_t offset = 20;
     do
     {
       bool distFnd = false;
@@ -568,7 +568,7 @@ namespace sick_scan
       if (rssiFnd || distFnd)
       {
         offset += 5;
-        if (offset >= fields.size())
+        if ((size_t)offset >= fields.size())
         {
           ROS_WARN("Missing RSSI or DIST data");
           return ExitError;
@@ -605,7 +605,7 @@ namespace sick_scan
       {
         offset++; // necessary????
       }
-    } while (offset < fields.size());
+    } while ((size_t)offset < fields.size());
 
     return (iRet);
   }
@@ -729,7 +729,7 @@ namespace sick_scan
       ftmp = fopen(szDumpFileName, "w");
       if (ftmp != NULL)
       {
-        int i;
+        size_t i;
         for (i = 0; i < count; i++)
         {
           fprintf(ftmp, "%3d: %s\n", i, fields[i]);
@@ -742,7 +742,7 @@ namespace sick_scan
     // Validate header. Total number of tokens is highly unreliable as this may
     // change when you change the scanning range or the device name using SOPAS ET
     // tool. The header remains stable, however.
-    if (count < HEADER_FIELDS)
+    if (count < (size_t)HEADER_FIELDS)
     {
       ROS_WARN(
           "received less fields than minimum fields (actual: %d, minimum: %d), ignoring scan", (int) count,
@@ -785,7 +785,7 @@ namespace sick_scan
       ROS_WARN("Data length is outside acceptable range 1-%d (%d). Ignoring scan", numOfExpectedShots, number_of_data);
       return ExitError;
     }
-    if (count < HEADER_FIELDS + number_of_data)
+    if (count < (size_t)(HEADER_FIELDS + number_of_data))
     {
       ROS_WARN("Less fields than expected for %d data points (%zu). Ignoring scan", number_of_data, count);
       return ExitError;
@@ -814,7 +814,7 @@ namespace sick_scan
 
       // Check if the total length is still appropriate.
       // RSSI data size = number of RSSI readings + 6 fields describing the data
-      if (count < HEADER_FIELDS + number_of_data + number_of_rssi_data + 6)
+      if (count < (size_t)(HEADER_FIELDS + number_of_data + number_of_rssi_data + 6))
       {
         ROS_WARN("Less fields than expected for %d data points (%zu). Ignoring scan", number_of_data, count);
         return ExitError;
@@ -956,7 +956,7 @@ namespace sick_scan
 #endif
     // ----- consistency check
 
-    this->checkScanTiming(msg.time_increment, msg.scan_time, msg.angle_increment, 0.00001);
+    this->checkScanTiming(msg.time_increment, msg.scan_time, msg.angle_increment, 0.00001f);
     return ExitSuccess;
   }
 

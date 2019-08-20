@@ -9,8 +9,12 @@
 #include "sick_scan/tcp/toolbox.hpp"
 #include <stdio.h>      // for sprintf()
 
+#ifdef linux
 #include <sys/socket.h> // for socket(), bind(), and connect()
 #include <arpa/inet.h>  // for sockaddr_in and inet_ntoa()
+#else
+#include <WinSock2.h>
+#endif
 #include <string.h>     // for memset()
 #include <netdb.h>      // for hostent
 #include <iostream>     // for cout
@@ -54,7 +58,7 @@ bool Tcp::write(UINT8* buffer, UINT32 numberOfBytes)
 	bool result;
 #ifdef _MSC_VER
 	SOCKET* socketPtr = &m_connectionSocket;
-	bytesSent = ::send(*socketPtr, (const char*)buffer, numberOfBytes, MSG_NOSIGNAL);
+	bytesSent = ::send(*socketPtr, (const char*)buffer, numberOfBytes,0);
 #else
 	INT32* socketPtr = &m_connectionSocket;
 	//flag MSG_NOSIGNAL prevents SIGPIPE when using lms_5xx scanners
@@ -163,6 +167,7 @@ bool Tcp::open(std::string ipAddress, UINT16 port, bool enableVerboseDebugOutput
 	
 	struct sockaddr_in addr;
 	struct hostent *server;
+
 	server = gethostbyname(ipAddress.c_str());
 	memset(&addr, 0, sizeof(addr));     		// Zero out structure
 	addr.sin_family = AF_INET;

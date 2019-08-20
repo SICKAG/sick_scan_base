@@ -360,12 +360,12 @@ binVsscanf(const char *bufOrg, const char *s, va_list ap, int bufLen)
           memcpy(tmp, buf, width);
           unsigned char *destAdr = va_arg(ap, unsigned char *);
           unsigned long destVal = 0;
-          for (int i = 0; i < width; i++)  // Big Endian - MSB first - convention for SOPAS-Binary
+          for (unsigned int i = 0; i < width; i++)  // Big Endian - MSB first - convention for SOPAS-Binary
           {
             destVal <<= 8;
             destVal |= (unsigned char) (0xFF & tmp[i]);
           }
-          for (int i = 0; i < width; i++)  // Big Endian - MSB first - convention for SOPAS-Binary
+          for (unsigned int i = 0; i < width; i++)  // Big Endian - MSB first - convention for SOPAS-Binary
           {
             unsigned char val = (unsigned char) (0xFF & (destVal >> (i * 8)));
             destAdr[i] = val;

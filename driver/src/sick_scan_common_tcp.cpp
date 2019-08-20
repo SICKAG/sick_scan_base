@@ -171,7 +171,7 @@ namespace sick_scan
         {
           request += (char) requestData[i];
         }
-        for (int i = 0; i < keyWordList.size(); i++)
+        for (size_t i = 0; i < keyWordList.size(); i++)
         {
           if (request.find(keyWordList[i]) != std::string::npos)
           {
@@ -182,7 +182,7 @@ namespace sick_scan
         }
 
         replyVector->clear();
-        for (int i = 0; i < reply.length(); i++)
+        for (size_t i = 0; i < reply.length(); i++)
         {
           replyVector->push_back((unsigned char) reply[i]);
         }
@@ -666,7 +666,7 @@ namespace sick_scan
     int numBytes = 0;
     // Polling - should be changed to condition variable in the future
     int waitingTimeInMs = 1; // try to lookup for new incoming packages
-    int i;
+    size_t i;
     for (i = 0; i < timeout_ms; i += waitingTimeInMs)
     {
       if (false == this->recvQueue.isQueueEmpty())

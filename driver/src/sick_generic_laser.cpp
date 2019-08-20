@@ -205,7 +205,7 @@ int mainGenericLaser(int argc, char **argv, std::string nodeName)
         ROS_INFO("Cannot parse launch file (check existence and content): >>>%s<<<\n", s.c_str());
         exit(-1);
       }
-      for (int i = 0; i < tagList.size(); i++)
+      for (size_t i = 0; i < tagList.size(); i++)
       {
         printf("%-30s %-10s %-20s\n", tagList[i].c_str(), typeList[i].c_str(), valList[i].c_str());
         nhPriv.setParam(tagList[i], valList[i]);

@@ -130,7 +130,7 @@ void swap_endian(unsigned char *ptr, int numBytes)
 std::vector<unsigned char> stringToVector(std::string s)
 {
   std::vector<unsigned char> result;
-  for (int j = 0; j < s.length(); j++)
+  for (size_t j = 0; j < s.length(); j++)
   {
     result.push_back(s[j]);
   }
@@ -206,7 +206,7 @@ namespace sick_scan
     int spaceCnt = 0x00;
     int cnt0x02 = 0;
 
-    for (int i = 0; i < s.size(); i++)
+    for (size_t i = 0; i < s.size(); i++)
     {
       if (s[i] != 0x02)
       {
@@ -233,7 +233,7 @@ namespace sick_scan
 
       unsigned long lenId = 0x00;
       char szDummy[255] = {0};
-      for (int i = 0; i < s.size(); i++)
+      for (size_t i = 0; i < s.size(); i++)
       {
         switch (parseState)
         {
@@ -310,7 +310,7 @@ namespace sick_scan
     }
     else
     {
-      for (int i = 0; i < s.size(); i++)
+      for (size_t i = 0; i < s.size(); i++)
       {
 
         if (s[i] >= ' ')
@@ -569,7 +569,7 @@ namespace sick_scan
     std::string tmpStr = "";
     int cnt0x02 = 0;
     bool isBinary = false;
-    for (int i = 0; i < 4; i++)
+    for (size_t i = 0; i < 4; i++)
     {
       if (i < requestStr.size())
       {
@@ -680,7 +680,7 @@ namespace sick_scan
   int SickScanCommon::sendSopasAndCheckAnswer(std::string requestStr, std::vector<unsigned char> *reply, int cmdId = -1)
   {
     std::vector<unsigned char> requestStringVec;
-    for (int i = 0; i < requestStr.length(); i++)
+    for (size_t i = 0; i < requestStr.length(); i++)
     {
       requestStringVec.push_back(requestStr[i]);
     }
@@ -701,7 +701,7 @@ namespace sick_scan
 
     std::string cmdStr = "";
     int cmdLen = 0;
-    for (int i = 0; i < requestStr.size(); i++)
+    for (size_t i = 0; i < requestStr.size(); i++)
     {
       cmdLen++;
       cmdStr += (char) requestStr[i];
@@ -1104,9 +1104,8 @@ namespace sick_scan
     ROS_INFO("Parameter setting for <active_echo: %d>", activeEchos);
     std::vector<bool> outputChannelFlag;
     outputChannelFlag.resize(maxNumberOfEchos);
-    int i;
     int numOfFlags = 0;
-    for (i = 0; i < outputChannelFlag.size(); i++)
+    for (size_t i = 0; i < outputChannelFlag.size(); i++)
     {
       /*
       After consultation with the company SICK,
@@ -1169,7 +1168,7 @@ namespace sick_scan
     bool restartDueToProcolChange = false;
 
 
-    for (int i = 0; i < this->sopasCmdChain.size(); i++)
+    for (size_t i = 0; i < this->sopasCmdChain.size(); i++)
     {
       ros::Duration(0.2).sleep();   // could maybe removed
 
@@ -1179,7 +1178,7 @@ namespace sick_scan
       std::vector<unsigned char> reqBinary;
 
       std::vector<unsigned char> sopasCmdVec;
-      for (int j = 0; j < sopasCmd.length(); j++)
+      for (size_t j = 0; j < sopasCmd.length(); j++)
       {
         sopasCmdVec.push_back(sopasCmd[j]);
       }
@@ -1821,7 +1820,7 @@ namespace sick_scan
       // Except for the LMS5xx scanner here the mask is hard 00 see SICK Telegram listing "Telegram structure: sWN LMDscandatacfg" for details
 
       outputChannelFlagId = 0x00;
-      for (int i = 0; i < outputChannelFlag.size(); i++)
+      for (size_t i = 0; i < outputChannelFlag.size(); i++)
       {
         outputChannelFlagId |= ((outputChannelFlag[i] == true) << i);
       }
@@ -2266,7 +2265,7 @@ namespace sick_scan
           unsigned char val = *it;
           inHexPrintMode = true;
           sprintf(szTmp, "\\x%02x", val);
-          for (int ii = 0; ii < strlen(szTmp); ii++)
+          for (size_t ii = 0; ii < strlen(szTmp); ii++)
           {
             reply_str.push_back(szTmp[ii]);
           }
@@ -2530,6 +2529,9 @@ namespace sick_scan
         bool dataToProcess = true;
         std::vector<float> vang_vec;
         vang_vec.clear();
+		dstart = NULL;
+		dend = NULL;
+
         while (dataToProcess)
         {
           const int maxAllowedEchos = 5;
@@ -2683,13 +2685,16 @@ namespace sick_scan
                     process_rssi,
                     process_idle
                   };
-                  for (int processLoop = 0; processLoop < 2; processLoop++)
+
+				  int distChannelCnt = 0;
+				  int rssiCnt = 0;
+				  int vangleCnt = 0;
+
+				  for (int processLoop = 0; processLoop < 2; processLoop++)
                   {
                     int totalChannelCnt = 0;
-                    int distChannelCnt;
-                    int rssiCnt;
+
                     bool bCont = true;
-                    int vangleCnt;
                     datagram_parse_task task = process_idle;
                     bool parsePacket = true;
                     parseOff = 64;
@@ -3090,8 +3095,8 @@ namespace sick_scan
             else
             {
 
-              int startOffset = 0;
-              int endOffset = 0;
+              size_t startOffset = 0;
+              size_t endOffset = 0;
               int echoPartNum = msg.ranges.size() / numEchos;
               for (int i = 0; i < numEchos; i++)
               {
@@ -3240,11 +3245,11 @@ namespace sick_scan
 
               std::vector<float> cosAlphaTable;
               std::vector<float> sinAlphaTable;
-              int rangeNum = rangeTmp.size() / numValidEchos;
+              size_t rangeNum = rangeTmp.size() / numValidEchos;
               cosAlphaTable.resize(rangeNum);
               sinAlphaTable.resize(rangeNum);
 
-              for (size_t iEcho = 0; iEcho < numValidEchos; iEcho++)
+              for (int iEcho = 0; iEcho < numValidEchos; iEcho++)
               {
 
                 float angle = config_.min_ang;
@@ -3253,8 +3258,13 @@ namespace sick_scan
                 float *cosAlphaTablePtr = &cosAlphaTable[0];
                 float *sinAlphaTablePtr = &sinAlphaTable[0];
 
-                float *vangPtr = &vang_vec[0];
-                float *rangeTmpPtr = &rangeTmp[0];
+				float *vangPtr = NULL;
+				float *rangeTmpPtr = &rangeTmp[0];
+				if (vang_vec.size() > 0)
+				{
+					vangPtr = &vang_vec[0];
+				}
+
                 for (size_t i = 0; i < rangeNum; i++)
                 {
                   enum enum_index_descr
@@ -3442,7 +3452,12 @@ namespace sick_scan
 
                 if (cnt == 25)
                 {
-                  const char *jpgFileName_tmp = "./demo/scan.jpg_tmp";
+				  char jpgFileName_tmp[255] = { 0 };
+#if linux				  
+				  strcpy(jpgFileName_tmp , "./demo/scan.jpg_tmp");
+#else
+				  strcpy(jpgFileName_tmp , "..\\demo\\scan.jpg_tmp");
+#endif
                   // Write JPEG Scan Top View
                   foutJpg = fopen(jpgFileName_tmp, "wb");
                   if (foutJpg == NULL)
@@ -3454,10 +3469,21 @@ namespace sick_scan
                   TooJpeg::writeJpeg(jpegOutputCallback, pixel, wi, hi, true, 99);
                   fclose(foutJpg);
                   free(pixel);
-                  rename(jpgFileName_tmp, "./demo/scan.jpg");
+#if linux				  
+				  rename(jpgFileName_tmp, "./demo/scan.jpg");
+#else
+				  _unlink("..\\demo\\scan.jpg");
+				  rename(jpgFileName_tmp, "..\\demo\\scan.jpg");
+#endif
+
                   }
                   // Write CSV-File
-                  const char *csvFileNameTmp = "./demo/scan.csv_tmp";
+				  char csvFileNameTmp[255];
+#if linux				  
+				  strcpy(csvFileNameTmp, "./demo/scan.csv_tmp");
+#else
+				  strcpy(csvFileNameTmp, "..\\demo\\scan.csv_tmp");
+#endif
                   FILE *foutCsv = fopen(csvFileNameTmp, "w");
                   if (foutCsv)
                   {
@@ -3487,11 +3513,15 @@ namespace sick_scan
 
                       intensity = ptr[3];
                       ptr += 4;
-                      fprintf(foutCsv,"%12ld;%12ld;%8.3lf;%8.3lf;%8.3lf;%8.3f;%8.3f;%8.3f;%8.0f\n", timestamp_sec, timestamp_nanosec, range_xyz, azimuthDeg, elevationDeg, x,z,y,intensity);
+                      fprintf(foutCsv,"%12ld;%12ld;%8.3lf;%8.3lf;%8.3lf;%8.3f;%8.3f;%8.3f;%8.0f\n", timestamp_sec, timestamp_nanosec, range_xyz, azimuthDeg, elevationDeg, x,y,z,intensity);
                     }
                       fclose(foutCsv);
-
+#ifdef linux
                      rename(csvFileNameTmp, "./demo/scan.csv");
+#else
+					  _unlink("..\\demo\\scan.csv");
+					  rename(csvFileNameTmp, "..\\demo\\scan.csv");
+#endif
                   }
                   else
                   {
@@ -3515,7 +3545,10 @@ namespace sick_scan
             }
           }
           // Start Point
-          buffer_pos = dend + 1;
+		  if (dend != NULL)
+		  {
+			  buffer_pos = dend + 1;
+		  }
         } // end of while loop
       }
 

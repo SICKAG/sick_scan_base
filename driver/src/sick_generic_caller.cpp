@@ -104,9 +104,10 @@
 // 001.003.017: May 2019 stability issues, scan rate and angular resolution settings added
 // 001.003.018: May 2019 LMS1000 Min/Max angel settings added and tested
 // 001.003.020: May 2019 Bloom process prepared
+// 001.004.000: Windows port for sick_scan_base
 #define SICK_GENERIC_MAJOR_VER "001"
-#define SICK_GENERIC_MINOR_VER "003"
-#define SICK_GENERIC_PATCH_LEVEL "020"
+#define SICK_GENERIC_MINOR_VER "004"
+#define SICK_GENERIC_PATCH_LEVEL "000"
 
 #include <algorithm> // for std::min
 
@@ -154,6 +155,9 @@ int main(int argc, char **argv)
   if (argc == 1) // just for testing without calling by roslaunch
   {
     ROS_INFO("Missing <launchfile>. Please start with ./sick_generic_caller <launchfile>\n");
+#ifdef WIN32
+	ROS_INFO("e.g. sick_generic_caller .\\launch\\sick_tim_5xx.launch\n");
+#endif	
     exit(-1);
   }
   //

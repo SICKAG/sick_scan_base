@@ -103,16 +103,14 @@ private:
 };
 
 
-
-
+#ifndef _MSC_VER
 
 void sudokill(pid_t tokill)
 {
-#ifndef _MSC_VER
   kill(tokill, SIGTERM);
-#endif
   sleep(5);
 }
+#endif
 
 std::vector<paramEntryAscii> getParamList(TiXmlNode *paramList)
 {
@@ -223,7 +221,7 @@ bool LaunchParser::parseFile(std::string launchFileFullName, std::vector<std::st
     node = node->FirstChild("node");
     std::vector<paramEntryAscii> paramOrgList = getParamList(node);
 
-      for (int j = 0; j < paramOrgList.size(); j++)
+      for (size_t j = 0; j < paramOrgList.size(); j++)
       {
         nameVec.push_back(paramOrgList[j].getName());
         typeVec.push_back(paramOrgList[j].getType());

@@ -240,7 +240,7 @@ namespace sick_scan
       ftmp = fopen(szDumpFileName, "w");
       if (ftmp != NULL)
       {
-        int i;
+        size_t i;
         for (i = 0; i < count; i++)
         {
           fprintf(ftmp, "%3d: %s\n", i, fields[i]);
@@ -466,14 +466,14 @@ namespace sick_scan
       keyWordPos.resize(keyWordList.size());
       keyWordScale.resize(keyWordList.size());
       keyWordScaleOffset.resize(keyWordList.size());
-      for (int i = 0; i < keyWordPos.size(); i++)
+      for (size_t i = 0; i < keyWordPos.size(); i++)
       {
         keyWordPos[i] = -1;
       }
       int numKeyWords = keyWordPos.size();
-      for (int i = 0; i < fields.size(); i++)
+      for (size_t i = 0; i < fields.size(); i++)
       {
-        for (int j = 0; j < keyWordList.size(); j++)
+        for (size_t j = 0; j < keyWordList.size(); j++)
         {
           if (strcmp(fields[i], keyWordList[j].c_str()) == 0)
           {
@@ -738,13 +738,13 @@ namespace sick_scan
       {
         float xp[2] = {0};  // for raw target
         float yp[2] = {0};
-        float vehicleWidth = 1.8;
+        float vehicleWidth = 1.8f;
         y = iY * 2.0;
         float speed = y * 10.0f;
         vehicle.V3Dx(speed); // +/- 20 m/s
         vehicle.V3Dy(0.1f); // just for testing
 
-        float xOff = 20.0;
+        float xOff = 20.0f;
         if (speed < 0.0)
         {
           xOff = 100.0;
@@ -1217,7 +1217,7 @@ namespace sick_scan
       radarMsg_.header.seq = 0;
 
       radarMsg_.objects.resize(objectList.size());
-      for (int i = 0; i < radarMsg_.objects.size(); i++)
+      for (size_t i = 0; i < radarMsg_.objects.size(); i++)
       {
         float vx = objectList[i].V3Dx();
         float vy = objectList[i].V3Dy();

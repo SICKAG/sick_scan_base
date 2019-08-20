@@ -1170,7 +1170,6 @@ namespace sick_scan
 
     for (size_t i = 0; i < this->sopasCmdChain.size(); i++)
     {
-      ros::Duration(0.2).sleep();   // could maybe removed
 
       int cmdId = sopasCmdChain[i]; // get next command
       std::string sopasCmd = sopasCmdVec[cmdId];

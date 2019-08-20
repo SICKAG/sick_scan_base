@@ -459,8 +459,9 @@ namespace ros
 #endif
 	bool Duration::sleep() const
 	{
-#ifdef _MSC_VER
-		Sleep(sec * 1000);
+		//TODO check this
+#ifdef ROSSIMU
+		usleep(sec * 1000000+nsec/1000);
 		return(true);
 #else
 

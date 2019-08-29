@@ -2997,10 +2997,12 @@ namespace sick_scan
 #else
                 sprintf(szFileName, "/tmp/dump%05d.txt", cnt);
 #endif
+#if 0
                 FILE *fout;
                 fout = fopen(szFileName, "wb");
                 fwrite(dstart, dlength, 1, fout);
                 fclose(fout);
+#endif
                 cnt++;
               }
             }
@@ -3472,7 +3474,7 @@ namespace sick_scan
                   {
                   TooJpeg::writeJpeg(jpegOutputCallback, pixel, wi, hi, true, 99);
                   fclose(foutJpg);
-                  free(pixel);
+
 #if linux				  
 				  rename(jpgFileName_tmp, "./demo/scan.jpg");
 #else
@@ -3533,7 +3535,7 @@ namespace sick_scan
                   }
                   cnt = 0;
                 }
-
+                free(pixel);
 #else
                 if (config_.cloud_output_mode==0)
                 {

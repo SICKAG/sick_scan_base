@@ -2,7 +2,28 @@
 Generic driver for SICK laser scanner
 
 This software is a C++ driver for Linux to collect data from an MRS1104 laser scanner. The gathered data is stored at regular intervals as CSV data and as an image file in JPEG format. The image file shows the scan data in the top view.
+## Supported Hardware
 
+This driver should work with all of the following products.
+
+| **device name**    |  **part no.**                                                                                                                | **description**                                | **tested?**     |
+|--------------------|------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|:---------------:|
+| MRS1104            | [1081208](https://www.sick.com/sg/en/detection-and-ranging-solutions/3d-lidar-sensors/mrs1000/mrs1104c-111011/p/p495044)         | 4 layer max. range: 64 m, ang. resol. 0.25 [deg] hor., 2.50 [deg] ver.                                         | ✔ [stable]|
+|                    |                                                                                                                                  | Scan-Rate: 50 Hz, 4x12.5 Hz            |                 |
+| TiM551             | [1060445](https://www.sick.com/de/en/detection-and-ranging-solutions/2d-lidar-sensors/tim5xx/tim551-2050001/p/p343045)                 | 1 layer max. range: 10 m, ang. resol. 1.00[deg] | ✔ [stable]|
+|                    |                                                                                                                                  | Scan-Rate: 15 Hz   |                 |
+| TiM561             | [1071419](https://www.sick.com/de/en/detection-and-ranging-solutions/2d-lidar-sensors/tim5xx/tim561-2050101/p/p369446)                 | 1 layer max. range: 10 m, ang. resol. 0.33 [deg]| ✔ [stable]|
+|                    |                                                                                                                                  | Scan-Rate: 15 Hz   |                 |
+| TiM571             | [1079742](https://www.sick.com/de/en/detection-and-ranging-solutions/2d-lidar-sensors/tim5xx/tim571-2050101/p/p412444)                 | 1 layer max. range: 25 m, ang. resol. 0.33 [deg]| ✔ [stable]|
+|                    |                                                                                                                                  | Scan-Rate: 15 Hz   |                 |
+| TiM781             | [1096807](https://www.sick.com/de/de/mess-und-detektionsloesungen/2d-lidar-sensoren/tim7xx/tim781-2174101/p/p594148)                 | 1 layer max. range: 25 m, ang. resol. 0.33 [deg]| ✔ [stable]|
+|                    |                                                                                                                                  | Scan-Rate: 15 Hz   |                 |
+| TiM781S            | [1096363](https://www.sick.com/de/de/mess-und-detektionsloesungen/2d-lidar-sensoren/tim7xx/tim781s-2174104/p/p594149)                 | 1 layer max. range: 25 m, ang. resol. 0.33 [deg]| ✔ [stable]|
+|                    |                                                                                                                                  | Scan-Rate: 15 Hz   |                 |
+| LMS511-10100 PRO   | [e.g. 1046135](https://www.sick.com/de/en/detection-and-ranging-solutions/2d-lidar-sensors/lms5xx/c/g179651)     | 1 layer max. range: 80 m, ang. resol. 0.167 [deg]| ✔ [stable]|
+|                    |                                                                                                                                  | Scan-Rate: 100 Hz   |                 |
+| LMS4xxx-Family      | [e.g. 1091423](https://www.sick.com/de/de/mess-und-detektionsloesungen/2d-lidar-sensoren/lms4000/lms4111r-13000/p/p578044?ff_data) | 1 layer max. range: 3 m, ang. resol. 0,0833 [deg]| ✔ [stable]|
+|                    |                                                                                                                                  | Scan-Rate: 600 Hz   |                 |
 ## Installation
 
 To install, follow the steps below:

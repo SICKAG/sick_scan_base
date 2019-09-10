@@ -1,7 +1,8 @@
 # sick_scan_base
 Generic driver for SICK laser scanner
 
-This software is a C++ driver for Linux to collect data from an MRS1104 laser scanner. The gathered data is stored at regular intervals as CSV data and as an image file in JPEG format. The image file shows the scan data in the top view.
+Generic C++ library for SICK laser scanner. Currently we support Windows and Ubuntu 18.04LTS for x86 architectures with this software.  Within the demo the gathered data is stored at regular intervals as CSV data and as an image file in JPEG format. The image file shows the scan data in the top view.
+
 ## Supported Hardware
 
 This driver should work with all of the following products.

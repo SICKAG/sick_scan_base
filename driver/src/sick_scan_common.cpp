@@ -1170,7 +1170,7 @@ namespace sick_scan
 
     for (size_t i = 0; i < this->sopasCmdChain.size(); i++)
     {
-
+      ros::Duration(1.0).sleep();
       int cmdId = sopasCmdChain[i]; // get next command
       std::string sopasCmd = sopasCmdVec[cmdId];
       std::vector<unsigned char> replyDummy;
@@ -2095,6 +2095,7 @@ namespace sick_scan
     std::vector<int>::iterator it;
     for (it = startProtocolSequence.begin(); it != startProtocolSequence.end(); it++)
     {
+      ros::Duration(1.0).sleep();
       int cmdId = *it;
       std::vector<unsigned char> tmpReply;
       //			sendSopasAndCheckAnswer(sopasCmdVec[cmdId].c_str(), &tmpReply);

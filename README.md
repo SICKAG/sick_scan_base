@@ -85,6 +85,14 @@ For the launch-file settings and the tag/values pairs the following keywords are
 | port | port number  | 2112 | do not change, check firewall rules if there is blocking traffic  |
 | timelimit | Timelimit in [sec]   | 5 | do not change  |
 
+## Supported operating systems
+
+This driver supports the following x86-based operating systems:
+
+* Ubuntu 18.04 with gcc
+* Windows 10 with Visual Studio Compiler (VS2017, VS2019)
+
+
 ## Keywords
 
 MRS1104

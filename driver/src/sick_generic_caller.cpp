@@ -105,8 +105,9 @@
 // 001.003.018: May 2019 LMS1000 Min/Max angel settings added and tested
 // 001.003.020: May 2019 Bloom process prepared
 // 001.004.000: Windows port for sick_scan_base
+// 001.005.000: Fix for time stamping
 #define SICK_GENERIC_MAJOR_VER "001"
-#define SICK_GENERIC_MINOR_VER "004"
+#define SICK_GENERIC_MINOR_VER "005"
 #define SICK_GENERIC_PATCH_LEVEL "000"
 
 #include <algorithm> // for std::min

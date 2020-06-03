@@ -77,7 +77,7 @@ For the launch-file settings and the tag/values pairs the following keywords are
 
 | Keyword      |     Meaning     |  Default value |    Hint       |
 |--------------|-----------------|----------------|---------------|
-| scanner_type |  Scanner family |  ???           | "sick_mrs_1xxx" is the only one currently supported. |
+| scanner_type |  Scanner family |  ???           | see list above |
 | min_ang      |  Start scan angle in [rad] |  -2.3998277           |  |
 | max_ang      |  End scan angle in [rad] |  +2.3998277           |  |
 | intensity_resolution_16bit | Switch between 8Bit/16Bit| "false" | do not change|

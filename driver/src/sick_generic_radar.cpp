@@ -243,7 +243,7 @@ namespace sick_scan
         size_t i;
         for (i = 0; i < count; i++)
         {
-          fprintf(ftmp, "%3d: %s\n", i, fields[i]);
+          fprintf(ftmp, "%3d: %s\n", (int)i, fields[i]);
         }
         fclose(ftmp);
       }

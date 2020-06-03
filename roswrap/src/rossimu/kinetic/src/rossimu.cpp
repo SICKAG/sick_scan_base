@@ -214,8 +214,8 @@ namespace ros
 }
 
 void ros::init(int &, char * *, class std::basic_string<char, struct std::char_traits<char>, class std::allocator<char> > const &, unsigned int)
-    {
-
+{
+  Time::init();
 }
 
 void ros::console::initialize(void)

@@ -2612,6 +2612,7 @@ namespace sick_scan
 
                   memcpy(&SystemCountTransmit, receiveBuffer + 0x2A, 4);
                   swap_endian((unsigned char *) &SystemCountTransmit, 4);
+#if 0
                   bool bRet = SoftwarePLL::instance().updatePLL(recvTimeStamp.sec, recvTimeStamp.nsec,
                                                                 SystemCountTransmit);
                   ros::Time tmp_time = recvTimeStamp;
@@ -2619,6 +2620,7 @@ namespace sick_scan
                                                                        SystemCountScan);
                   //TODO Handle return values
                   ros::Duration debug_duration = recvTimeStamp - tmp_time;
+#endif
 #ifdef DEBUG_DUMP_ENABLED
                   double elevationAngleInDeg = elevationAngleInRad = -elevAngleX200 / 200.0;
                   // DataDumper::instance().pushData((double)SystemCountScan, "LAYER", elevationAngleInDeg);

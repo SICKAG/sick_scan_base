@@ -44,8 +44,9 @@
 #define SICK_SCANNER_LMS_5XX_NAME "sick_lms_5xx"
 #define SICK_SCANNER_LMS_1XX_NAME "sick_lms_1xx"
 #define SICK_SCANNER_MRS_6XXX_NAME "sick_mrs_6xxx"
-#define SICK_SCANNER_RMS_3XX_NAME "sick_rms_3xx"
 #define SICK_SCANNER_LMS_4XXX_NAME "sick_lms_4xxx"
+#define SICK_SCANNER_RMS_3XX_NAME "sick_rms_3xx"
+#define SICK_SCANNER_TIM_4XX_NAME "sick_tim_4xx"
 #include "abstract_parser.h"
 
 #include "sensor_msgs/LaserScan.h"
@@ -54,30 +55,54 @@
 // namespace sensor_msgs
 namespace sick_scan
 {
-	class ScannerBasicParam
-	{
-	public:
-		void setScannerName(std::string _s);
-		std::string getScannerName(void);
-		void setNumberOfLayers(int _layerNum);
-		int getNumberOfLayers(void);
-		void setNumberOfShots(int _shots);
-		int getNumberOfShots(void);
-		void setNumberOfMaximumEchos(int _maxEchos);
-		int getNumberOfMaximumEchos(void);
-		void setAngularDegreeResolution(double _res);
-		void setElevationDegreeResolution(double _elevRes); 
-		double getElevationDegreeResolution(void);
-		double getAngularDegreeResolution(void);
-		double getExpectedFrequency(void);
-		bool getDeviceIsRadar(void);
-		bool getUseBinaryProtocol(void);
-		void setUseBinaryProtocol(bool _useBinary);
-		void setDeviceIsRadar(bool _deviceIsRadar);
-		void setIntensityResolutionIs16Bit(bool _IntensityResolutionIs16Bit);
-		bool getIntensityResolutionIs16Bit(void);
-      void setExpectedFrequency(double _freq);
-		ScannerBasicParam();
+  class ScannerBasicParam
+  {
+  public:
+    void setScannerName(std::string _s);
+
+    std::string getScannerName(void);
+
+    void setNumberOfLayers(int _layerNum);
+
+    int getNumberOfLayers(void);
+
+    void setNumberOfShots(int _shots);
+
+    int getNumberOfShots(void);
+
+    void setNumberOfMaximumEchos(int _maxEchos);
+
+    int getNumberOfMaximumEchos(void);
+
+    void setAngularDegreeResolution(double _res);
+
+    void setElevationDegreeResolution(double _elevRes);
+
+    double getElevationDegreeResolution(void);
+
+    double getAngularDegreeResolution(void);
+
+    double getExpectedFrequency(void);
+
+    bool getDeviceIsRadar(void);
+
+    bool getUseBinaryProtocol(void);
+
+    void setScanMirroredAndShifted(bool _scanMirroredAndShifted);
+
+    bool getScanMirroredAndShifted();
+
+    void setUseBinaryProtocol(bool _useBinary);
+
+    void setDeviceIsRadar(bool _deviceIsRadar);
+
+    void setIntensityResolutionIs16Bit(bool _IntensityResolutionIs16Bit);
+
+    bool getIntensityResolutionIs16Bit(void);
+
+    void setExpectedFrequency(double _freq);
+
+    ScannerBasicParam();
 		void setUseSaftyPasWD(bool _useSaftyPasWD);
 		bool getUseSaftyPasWD();
 	private:

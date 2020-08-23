@@ -2,8 +2,8 @@
 * \file
 * \brief Laser Scanner Entry Point
 *
-* Copyright (C) 2019,2018,2017, Ing.-Buero Dr. Michael Lehning, Hildesheim
-* Copyright (C) 2019,2018,2017, SICK AG, Waldkirch
+* Copyright (C) 2020, 2019,2018,2017, Ing.-Buero Dr. Michael Lehning, Hildesheim
+* Copyright (C) 2020, 2019,2018,2017, SICK AG, Waldkirch
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@
 * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 * POSSIBILITY OF SUCH DAMAGE.
 *
-*  Last modified: 29 May 2019
+*  Last modified: 9th June 2020
 *
 *      Authors:
 *         Michael Lehning <michael.lehning@lehning.de>
@@ -106,9 +106,9 @@
 // 001.003.020: May 2019 Bloom process prepared
 // 001.004.000: Windows port for sick_scan_base
 // 001.005.000: Fix for time stamping
-#define SICK_GENERIC_MAJOR_VER "001"
-#define SICK_GENERIC_MINOR_VER "005"
-#define SICK_GENERIC_PATCH_LEVEL "000"
+#define SICK_GENERIC_MAJOR_VER "1"
+#define SICK_GENERIC_MINOR_VER "7"
+#define SICK_GENERIC_PATCH_LEVEL "7"
 
 #include <algorithm> // for std::min
 

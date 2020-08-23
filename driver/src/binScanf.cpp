@@ -351,21 +351,25 @@ binVsscanf(const char *bufOrg, const char *s, va_list ap, int bufLen)
         if (!width)
         {
           if (binIsspace(*(s + 1)) || *(s + 1) == 0)
+          {
             width = (int) strcspn(buf, ISSPACE);
+          }
           else
+          {
             width = (int) (strchr(buf, *(s + 1)) - buf);
+          }
         }
         if (base == 1)  // binary data - plain copy without string function
         {
           memcpy(tmp, buf, width);
           unsigned char *destAdr = va_arg(ap, unsigned char *);
           unsigned long destVal = 0;
-          for (unsigned int i = 0; i < width; i++)  // Big Endian - MSB first - convention for SOPAS-Binary
+          for (int i = 0; i < width; i++)  // Big Endian - MSB first - convention for SOPAS-Binary
           {
             destVal <<= 8;
             destVal |= (unsigned char) (0xFF & tmp[i]);
           }
-          for (unsigned int i = 0; i < width; i++)  // Big Endian - MSB first - convention for SOPAS-Binary
+          for (int i = 0; i < width; i++)  // Big Endian - MSB first - convention for SOPAS-Binary
           {
             unsigned char val = (unsigned char) (0xFF & (destVal >> (i * 8)));
             destAdr[i] = val;
@@ -376,7 +380,9 @@ binVsscanf(const char *bufOrg, const char *s, va_list ap, int bufLen)
           strncpy(tmp, buf, width);
           tmp[width] = '\0';
           if (!noassign)
+          {
             binAtob(va_arg(ap, unsigned long *), tmp, base);
+          }
         }
         buf += width;
       }

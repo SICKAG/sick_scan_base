@@ -345,9 +345,10 @@ namespace sick_scan
     allowedScannerNames.push_back(SICK_SCANNER_MRS_6XXX_NAME);
     allowedScannerNames.push_back(SICK_SCANNER_LMS_4XXX_NAME);
     allowedScannerNames.push_back(SICK_SCANNER_RMS_3XX_NAME); // Radar scanner
+    allowedScannerNames.push_back(SICK_SCANNER_TIM_4XX_NAME);
     basicParams.resize(allowedScannerNames.size()); // resize to number of supported scanner types
-    for (size_t i = 0; i <
-                    basicParams.size(); i++) // set specific parameter for each scanner type - scanner type is identified by name
+    for (int i = 0; i <
+                    (int) basicParams.size(); i++) // set specific parameter for each scanner type - scanner type is identified by name
     {
       basicParams[i].setDeviceIsRadar(false); // Default
       basicParams[i].setScannerName(allowedScannerNames[i]);  // set scanner type for this parameter object
@@ -471,9 +472,20 @@ namespace sick_scan
 
       }
 
+      if (basicParams[i].getScannerName().compare(SICK_SCANNER_TIM_4XX_NAME) == 0) // TiM433 and TiM443
+      {
+        basicParams[i].setNumberOfMaximumEchos(1);
+        basicParams[i].setNumberOfLayers(1);
+        basicParams[i].setNumberOfShots(721);
+        basicParams[i].setAngularDegreeResolution(0.33333333333);
+        basicParams[i].setExpectedFrequency(15.0);
+        basicParams[i].setUseBinaryProtocol(true);
+        basicParams[i].setDeviceIsRadar(false); // Default
+      }
     }
 
     int scannerIdx = lookUpForAllowedScanner(scannerType);
+
     if (scannerIdx == -1)  // find index of parameter set - derived from scanner type name
     {
       ROS_ERROR("Scanner not supported.\n");
@@ -502,7 +514,7 @@ namespace sick_scan
   int SickGenericParser::lookUpForAllowedScanner(std::string scannerName)
   {
     int iRet = -1;
-    for (size_t i = 0; i < allowedScannerNames.size(); i++)
+    for (int i = 0; i < (int) allowedScannerNames.size(); i++)
     {
       if (allowedScannerNames[i].compare(scannerName) == 0)
       {
@@ -554,7 +566,7 @@ namespace sick_scan
       return ExitError;
     }
 
-    size_t offset = 20;
+    int offset = 20;
     do
     {
       bool distFnd = false;
@@ -580,7 +592,7 @@ namespace sick_scan
       if (rssiFnd || distFnd)
       {
         offset += 5;
-        if ((size_t)offset >= fields.size())
+        if (offset >= (int) fields.size())
         {
           ROS_WARN("Missing RSSI or DIST data");
           return ExitError;
@@ -617,7 +629,7 @@ namespace sick_scan
       {
         offset++; // necessary????
       }
-    } while ((size_t)offset < fields.size());
+    } while (offset < (int) fields.size());
 
     return (iRet);
   }
@@ -631,7 +643,7 @@ namespace sick_scan
     }
 
     float expected_time_increment =
-        this->getCurrentParamPtr()->getNumberOfLayers() * scan_time * angle_increment / (2.0 * M_PI);
+        fabs(this->getCurrentParamPtr()->getNumberOfLayers() * scan_time * angle_increment / (2.0 * M_PI));//If the direction of rotation is reversed, i.e. negative angle increment, a negative scan time results. This does not makes sense, therefore the absolute value is calculated.
     if (fabs(expected_time_increment - time_increment) > 0.00001)
     {
       ROS_WARN_THROTTLE(60,
@@ -684,7 +696,7 @@ namespace sick_scan
     if (verboseLevel > 0)
     {
       static int cnt = 0;
-      char szDumpFileName[255] = {0};
+      char szDumpFileName[511] = {0};
       char szDir[255] = {0};
 #ifdef _MSC_VER
       strcpy(szDir,"C:\\temp\\");
@@ -728,7 +740,7 @@ namespace sick_scan
     if (verboseLevel > 0)
     {
       static int cnt = 0;
-      char szDumpFileName[255] = {0};
+      char szDumpFileName[511] = {0};
       char szDir[255] = {0};
 #ifdef _MSC_VER
       strcpy(szDir,"C:\\temp\\");
@@ -741,10 +753,10 @@ namespace sick_scan
       ftmp = fopen(szDumpFileName, "w");
       if (ftmp != NULL)
       {
-        size_t i;
+        int i;
         for (i = 0; i < count; i++)
         {
-          fprintf(ftmp, "%3d: %s\n", (int)i, fields[i]);
+          fprintf(ftmp, "%3d: %s\n", i, fields[i]);
         }
         fclose(ftmp);
       }
@@ -754,7 +766,7 @@ namespace sick_scan
     // Validate header. Total number of tokens is highly unreliable as this may
     // change when you change the scanning range or the device name using SOPAS ET
     // tool. The header remains stable, however.
-    if (count < (size_t)HEADER_FIELDS)
+    if (count < HEADER_FIELDS)
     {
       ROS_WARN(
           "received less fields than minimum fields (actual: %d, minimum: %d), ignoring scan", (int) count,
@@ -797,7 +809,7 @@ namespace sick_scan
       ROS_WARN("Data length is outside acceptable range 1-%d (%d). Ignoring scan", numOfExpectedShots, number_of_data);
       return ExitError;
     }
-    if (count < (size_t)(HEADER_FIELDS + number_of_data))
+    if (count < HEADER_FIELDS + number_of_data)
     {
       ROS_WARN("Less fields than expected for %d data points (%zu). Ignoring scan", number_of_data, count);
       return ExitError;
@@ -826,7 +838,7 @@ namespace sick_scan
 
       // Check if the total length is still appropriate.
       // RSSI data size = number of RSSI readings + 6 fields describing the data
-      if (count < (size_t)(HEADER_FIELDS + number_of_data + number_of_rssi_data + 6))
+      if (count < HEADER_FIELDS + number_of_data + number_of_rssi_data + 6)
       {
         ROS_WARN("Less fields than expected for %d data points (%zu). Ignoring scan", number_of_data, count);
         return ExitError;
@@ -848,7 +860,7 @@ namespace sick_scan
     // ----- read fields into msg
     msg.header.frame_id = config.frame_id;
     // evtl. debug stream benutzen
-    ROS_DEBUG("publishing with frame_id %s", config.frame_id.c_str());
+    // ROS_DEBUG("publishing with frame_id %s", config.frame_id.c_str());
 
     ros::Time start_time = ros::Time::now(); // will be adjusted in the end
 
@@ -866,8 +878,6 @@ namespace sick_scan
     // 7: Telegram counter (eg. 99)
     // 8: Scan counter (eg. 9A)
     // 9: Time since startup (eg. 13C8E59)
-
-
     // 10: Time of transmission (eg. 13C9CBE)
     // 11 + 12: Input status (0 0)
     // 13 + 14: Output status (8 0)

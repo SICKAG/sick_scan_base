@@ -822,6 +822,7 @@ namespace sick_scan
 
     if (this->getEmulSensor())
     {
+#ifndef _MSC_VER
       // boost::this_thread::sleep(boost::posix_time::milliseconds(waitingTimeInMs));
       ros::Time timeStamp = ros::Time::now();
       uint32_t nanoSec = timeStamp.nsec;
@@ -836,6 +837,7 @@ namespace sick_scan
       radar.setEmulation(true);
       radar.simulateAsciiDatagram(receiveBuffer, actual_length);
       recvTimeStamp = ros::Time::now();
+#endif
     }
     else
     {

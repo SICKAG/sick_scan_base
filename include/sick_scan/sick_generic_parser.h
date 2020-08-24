@@ -38,6 +38,7 @@
 // List of supported laser scanner and radar scanner
 #define SICK_SCANNER_LMS_1XXX_NAME "sick_lms_1xxx"
 #define SICK_SCANNER_MRS_1XXX_NAME "sick_mrs_1xxx"
+#define SICK_SCANNER_TIM_240_NAME "sick_tim_240"
 #define SICK_SCANNER_TIM_5XX_NAME "sick_tim_5xx"
 #define SICK_SCANNER_TIM_7XX_NAME "sick_tim_7xx"
 #define SICK_SCANNER_TIM_7XXS_NAME "sick_tim_7xxS"
@@ -46,6 +47,8 @@
 #define SICK_SCANNER_MRS_6XXX_NAME "sick_mrs_6xxx"
 #define SICK_SCANNER_LMS_4XXX_NAME "sick_lms_4xxx"
 #define SICK_SCANNER_RMS_3XX_NAME "sick_rms_3xx"
+#define SICK_SCANNER_NAV_3XX_NAME "sick_nav_3xx"
+#define SICK_SCANNER_NAV_2XX_NAME "sick_nav_2xx"
 #define SICK_SCANNER_TIM_4XX_NAME "sick_tim_4xx"
 #include "abstract_parser.h"
 
@@ -103,62 +106,79 @@ namespace sick_scan
     void setExpectedFrequency(double _freq);
 
     ScannerBasicParam();
-		void setUseSaftyPasWD(bool _useSaftyPasWD);
-		bool getUseSaftyPasWD();
-	private:
-		std::string scannerName;
-		int numberOfLayers;
-		int numberOfShots;
-		int numberOfMaximumEchos;
-		double elevationDegreeResolution;
-		double angleDegressResolution;
-      double expectedFrequency;
-	  bool useBinaryProtocol;
-	  bool IntensityResolutionIs16Bit;
-	  bool deviceIsRadar;
-		bool UseSaftyPasWD;
-	  bool CartographerCompatibility;
-	};
+
+    void setUseSafetyPasWD(bool _useSafetyPasWD);
+
+    bool getUseSafetyPasWD();
+
+    void setEncoderMode(int8_t _EncoderMode);
+
+    int8_t getEncoderMode();
+
+  private:
+    std::string scannerName;
+    int numberOfLayers;
+    int numberOfShots;
+    int numberOfMaximumEchos;
+    double elevationDegreeResolution;
+    double angleDegressResolution;
+    double expectedFrequency;
+    bool useBinaryProtocol;
+    bool IntensityResolutionIs16Bit;
+    bool deviceIsRadar;
+    bool useSafetyPasWD;
+    int8_t encoderMode;
+    bool CartographerCompatibility;
+    bool scanMirroredAndShifted;
+  };
 
 
+  class SickGenericParser : public AbstractParser
+  {
+  public:
+    SickGenericParser(std::string scannerType);
 
-	class SickGenericParser : public AbstractParser
-	{
-	public:
-		SickGenericParser(std::string scannerType);
-		virtual ~SickGenericParser();
+    virtual ~SickGenericParser();
 
-		virtual int parse_datagram(char* datagram, size_t datagram_length, SickScanConfig &config,
-			sensor_msgs::LaserScan &msg, int &numEchos, int& echoMask);
+    virtual int parse_datagram(char *datagram, size_t datagram_length, SickScanConfig &config,
+                               sensor_msgs::LaserScan &msg, int &numEchos, int &echoMask);
 
 
-		void checkScanTiming(float time_increment, float scan_time, float angle_increment, float tol);
+    void checkScanTiming(float time_increment, float scan_time, float angle_increment, float tol);
 
-		void set_range_min(float min);
-		void set_range_max(float max);
+    void set_range_min(float min);
+
+    void set_range_max(float max);
 
     float get_range_min(void);
+
     float get_range_max(void);
 
-		void set_time_increment(float time);
-		void setScannerType(std::string s);
-		std::string getScannerType(void);
-		int lookUpForAllowedScanner(std::string scannerName);
-		void setCurrentParamPtr(ScannerBasicParam* _ptr);
-		ScannerBasicParam *getCurrentParamPtr();
+    void set_time_increment(float time);
+
+    void setScannerType(std::string s);
+
+    std::string getScannerType(void);
+
+    int lookUpForAllowedScanner(std::string scannerName);
+
+    void setCurrentParamPtr(ScannerBasicParam *_ptr);
+
+    ScannerBasicParam *getCurrentParamPtr();
 
 
-		int checkForDistAndRSSI(std::vector<char *>& fields, int expected_number_of_data, int& distNum, int& rssiNum, std::vector<float>& distVal, std::vector<float>& rssiVal,int& distMask);
+    int checkForDistAndRSSI(std::vector<char *> &fields, int expected_number_of_data, int &distNum, int &rssiNum,
+                            std::vector<float> &distVal, std::vector<float> &rssiVal, int &distMask);
 
 
-	private:
-		float override_range_min_, override_range_max_;
-		float override_time_increment_;
-		std::string scannerType;
-		std::vector<std::string> allowedScannerNames;
-		std::vector<ScannerBasicParam> basicParams;
-		ScannerBasicParam *currentParamSet;
-	};
+  private:
+    float override_range_min_, override_range_max_;
+    float override_time_increment_;
+    std::string scannerType;
+    std::vector<std::string> allowedScannerNames;
+    std::vector<ScannerBasicParam> basicParams;
+    ScannerBasicParam *currentParamSet;
+  };
 
 } /* namespace sick_scan */
 #endif /* SICK_GENERIC_PARSER_H_ */

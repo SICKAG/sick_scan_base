@@ -36,12 +36,12 @@
 * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 * POSSIBILITY OF SUCH DAMAGE.
 *
-*  Last modified: 12th Dec 2017
+*  Last modified: 05th Nov 2019
 *
 *      Authors:
 *              Michael Lehning <michael.lehning@lehning.de>
-*         Jochen Sprickerhof <jochen@sprickerhof.de>
-*         Martin Günther <mguenthe@uos.de>
+*              Jochen Sprickerhof <jochen@sprickerhof.de>
+*              Martin Günther <mguenthe@uos.de>
 *
 * Based on the TiM communication example by SICK AG.
 *
@@ -58,14 +58,13 @@
 #include <sick_scan/sick_scan_common.h>
 #include <ros/ros.h>
 
-#ifdef ROSSIMU
-
+#ifdef _MSC_VER
 #include "sick_scan/rosconsole_simu.hpp"
-
 #endif
 
 namespace sick_scan
 {
+  using namespace std;
 
   /*!
   \brief Setting name (type) of scanner
@@ -264,6 +263,26 @@ namespace sick_scan
   }
 
   /*!
+\brief flag to mark mirroring of rotation direction
+\param _scanMirrored: false for normal mounting true for up side down or NAV 310
+\sa setScanMirrored
+*/
+  void ScannerBasicParam::setScanMirroredAndShifted(bool _scannMirroredAndShifted)
+  {
+    scanMirroredAndShifted = _scannMirroredAndShifted;
+  }
+
+  /*!
+  \brief flag to mark mirroring of rotation direction
+  \param _scanMirrored:  false for normal mounting true for up side down or NAV 310
+  \sa getScanMirrored
+  */
+  bool ScannerBasicParam::getScanMirroredAndShifted(void)
+  {
+    return (scanMirroredAndShifted);
+  }
+
+  /*!
   \brief flag to decide between usage of ASCII-sopas or BINARY-sopas
   \return _useBinary: True for binary, False for ASCII
   \sa getUseBinaryProtocol
@@ -294,23 +313,23 @@ namespace sick_scan
   }
 
   /*!
-  \brief flag to mark the device uses the safty scanner password
-  \param _deviceIsRadar: false for normal scanners true for safty scanners
-  \sa setUseSaftyPasWD
+  \brief flag to mark the device uses the safety scanner password
+  \param  _useSafetyPasWD: false for normal scanners true for safety scanners
+  \sa setUseSafetyPasWD
   */
-  void ScannerBasicParam::setUseSaftyPasWD(bool _useSaftyPasWD)
+  void ScannerBasicParam::setUseSafetyPasWD(bool _useSafetyPasWD)
   {
-    this->UseSaftyPasWD = _useSaftyPasWD;
+    this->useSafetyPasWD = _useSafetyPasWD;
   }
 
   /*!
-  \brief flag to mark the device uses the safty scanner password
-  \reutrn Bool true for safty password false for normal password
-  \sa getUseSaftyPasWD
+  \brief flag to mark the device uses the safety scanner password
+  \reutrn Bool true for safety password false for normal password
+  \sa getUseSafetyPasWD
   */
-  bool ScannerBasicParam::getUseSaftyPasWD()
+  bool ScannerBasicParam::getUseSafetyPasWD()
   {
-    return (UseSaftyPasWD);
+    return (useSafetyPasWD);
   }
 
   /*!
@@ -321,6 +340,27 @@ namespace sick_scan
   {
     this->elevationDegreeResolution = 0.0;
     this->setUseBinaryProtocol(false);
+  }
+
+  /*!
+\brief Prama for encoder mode
+\param _EncoderMode: -1 Use for Scanners WO Encoder 00 disabled 01 single increment 02 direction recognition phase 03 direction recognition level
+\sa setEncoderMode
+*/
+  void ScannerBasicParam::setEncoderMode(int8_t _encoderMode)
+  {
+    this->encoderMode = _encoderMode;
+  }
+
+  /*!
+  /*!
+\brief Getter-Method for encoder mode
+\return EncoderMode:-1 Use for Scanners WO Encoder  00 disabled 01 single increment 02 direction recognition phase 03 direction recognition level
+\sa setEncoderMode
+  */
+  int8_t ScannerBasicParam::getEncoderMode()
+  {
+    return (encoderMode);
   }
 
   /*!
@@ -336,6 +376,7 @@ namespace sick_scan
   {
     setScannerType(_scanType);
     allowedScannerNames.push_back(SICK_SCANNER_MRS_1XXX_NAME);
+    allowedScannerNames.push_back(SICK_SCANNER_TIM_240_NAME);
     allowedScannerNames.push_back(SICK_SCANNER_TIM_5XX_NAME);
     allowedScannerNames.push_back(SICK_SCANNER_TIM_7XX_NAME);
     allowedScannerNames.push_back(SICK_SCANNER_TIM_7XXS_NAME);
@@ -345,6 +386,8 @@ namespace sick_scan
     allowedScannerNames.push_back(SICK_SCANNER_MRS_6XXX_NAME);
     allowedScannerNames.push_back(SICK_SCANNER_LMS_4XXX_NAME);
     allowedScannerNames.push_back(SICK_SCANNER_RMS_3XX_NAME); // Radar scanner
+    allowedScannerNames.push_back(SICK_SCANNER_NAV_3XX_NAME);
+    allowedScannerNames.push_back(SICK_SCANNER_NAV_2XX_NAME);
     allowedScannerNames.push_back(SICK_SCANNER_TIM_4XX_NAME);
     basicParams.resize(allowedScannerNames.size()); // resize to number of supported scanner types
     for (int i = 0; i <
@@ -364,7 +407,9 @@ namespace sick_scan
         basicParams[i].setExpectedFrequency(50.0);
         basicParams[i].setUseBinaryProtocol(true);
         basicParams[i].setDeviceIsRadar(false); // Default
-        basicParams[i].setUseSaftyPasWD(false); // Default
+        basicParams[i].setUseSafetyPasWD(false); // Default
+        basicParams[i].setEncoderMode(-1); // Default
+        basicParams[i].setScanMirroredAndShifted(false);
       }
       if (basicParams[i].getScannerName().compare(SICK_SCANNER_LMS_1XXX_NAME) ==
           0)  // LMS1000 - 4 layer, 1101 shots per scan
@@ -377,7 +422,24 @@ namespace sick_scan
         basicParams[i].setExpectedFrequency(50.0);
         basicParams[i].setUseBinaryProtocol(true);
         basicParams[i].setDeviceIsRadar(false); // Default
-        basicParams[i].setUseSaftyPasWD(false); // Default
+        basicParams[i].setUseSafetyPasWD(false); // Default
+        basicParams[i].setEncoderMode(-1); // Default
+        basicParams[i].setScanMirroredAndShifted(false);
+      }
+      if (basicParams[i].getScannerName().compare(SICK_SCANNER_TIM_240_NAME) ==
+          0) // TIM_5xx - 1 Layer, max. 811 shots per scan
+      {
+        basicParams[i].setNumberOfMaximumEchos(1);
+        basicParams[i].setNumberOfLayers(1);
+        basicParams[i].setNumberOfShots(241); // [-120 deg, 120 deg]
+        basicParams[i].setAngularDegreeResolution(1.00000);
+        basicParams[i].setExpectedFrequency(15.0);
+        basicParams[i].setUseBinaryProtocol(true);
+        basicParams[i].setDeviceIsRadar(false); // Default
+        basicParams[i].setUseSafetyPasWD(false); // Default
+        basicParams[i].setEncoderMode(-1); // Default
+        basicParams[i].setScanMirroredAndShifted(false);
+
       }
       if (basicParams[i].getScannerName().compare(SICK_SCANNER_TIM_5XX_NAME) ==
           0) // TIM_5xx - 1 Layer, max. 811 shots per scan
@@ -389,7 +451,10 @@ namespace sick_scan
         basicParams[i].setExpectedFrequency(15.0);
         basicParams[i].setUseBinaryProtocol(true);
         basicParams[i].setDeviceIsRadar(false); // Default
-        basicParams[i].setUseSaftyPasWD(false); // Default
+        basicParams[i].setUseSafetyPasWD(false); // Default
+        basicParams[i].setEncoderMode(-1); // Default
+        basicParams[i].setScanMirroredAndShifted(false);
+
       }
       if (basicParams[i].getScannerName().compare(SICK_SCANNER_LMS_4XXX_NAME) == 0) // LMS_4xxx - 1 Layer, 600 Hz
       {
@@ -400,7 +465,9 @@ namespace sick_scan
         basicParams[i].setExpectedFrequency(600.0);
         basicParams[i].setUseBinaryProtocol(true);
         basicParams[i].setDeviceIsRadar(false); // Default
-        basicParams[i].setUseSaftyPasWD(false); // Default
+        basicParams[i].setUseSafetyPasWD(false); // Default
+        basicParams[i].setEncoderMode(-1); // Default
+        basicParams[i].setScanMirroredAndShifted(false);
       }
       if (basicParams[i].getScannerName().compare(SICK_SCANNER_TIM_7XX_NAME) == 0) // TIM_7xx - 1 Layer Scanner
       {
@@ -411,9 +478,11 @@ namespace sick_scan
         basicParams[i].setExpectedFrequency(15.0);
         basicParams[i].setUseBinaryProtocol(true);
         basicParams[i].setDeviceIsRadar(false); // Default
-        basicParams[i].setUseSaftyPasWD(false); // Default
+        basicParams[i].setUseSafetyPasWD(false); // Default
+        basicParams[i].setEncoderMode(-1); // Default
+        basicParams[i].setScanMirroredAndShifted(false);
       }
-      if (basicParams[i].getScannerName().compare(SICK_SCANNER_TIM_7XXS_NAME) == 0) // TIM_7xxS - 1 layer Safty Scanner
+      if (basicParams[i].getScannerName().compare(SICK_SCANNER_TIM_7XXS_NAME) == 0) // TIM_7xxS - 1 layer Safety Scanner
       {
         basicParams[i].setNumberOfMaximumEchos(1);
         basicParams[i].setNumberOfLayers(1);
@@ -422,7 +491,9 @@ namespace sick_scan
         basicParams[i].setExpectedFrequency(15.0);
         basicParams[i].setUseBinaryProtocol(true);
         basicParams[i].setDeviceIsRadar(false); // Default
-        basicParams[i].setUseSaftyPasWD(true); // Safty scanner
+        basicParams[i].setUseSafetyPasWD(true); // Safety scanner
+        basicParams[i].setEncoderMode(-1); // Default
+        basicParams[i].setScanMirroredAndShifted(false);
       }
       if (basicParams[i].getScannerName().compare(SICK_SCANNER_LMS_5XX_NAME) == 0) // LMS_5xx - 1 Layer
       {
@@ -433,18 +504,22 @@ namespace sick_scan
         basicParams[i].setExpectedFrequency(15.0);
         basicParams[i].setUseBinaryProtocol(true);
         basicParams[i].setDeviceIsRadar(false); // Default
-        basicParams[i].setUseSaftyPasWD(false); // Default
+        basicParams[i].setUseSafetyPasWD(false); // Default
+        basicParams[i].setEncoderMode(-1); // Default
+        basicParams[i].setScanMirroredAndShifted(false);
       }
       if (basicParams[i].getScannerName().compare(SICK_SCANNER_LMS_1XX_NAME) == 0) // LMS_1xx - 1 Layer
       {
         basicParams[i].setNumberOfMaximumEchos(1);
         basicParams[i].setNumberOfLayers(1);
-        basicParams[i].setNumberOfShots(1141);
+        basicParams[i].setNumberOfShots(1081);
         basicParams[i].setAngularDegreeResolution(0.5);
         basicParams[i].setExpectedFrequency(25.0);
         basicParams[i].setUseBinaryProtocol(true);
         basicParams[i].setDeviceIsRadar(false); // Default
-        basicParams[i].setUseSaftyPasWD(false); // Default
+        basicParams[i].setUseSafetyPasWD(false); // Default
+        basicParams[i].setEncoderMode(-1); // Default
+        basicParams[i].setScanMirroredAndShifted(false);
       }
       if (basicParams[i].getScannerName().compare(SICK_SCANNER_MRS_6XXX_NAME) == 0) //
       {
@@ -456,7 +531,9 @@ namespace sick_scan
         basicParams[i].setExpectedFrequency(50.0);
         basicParams[i].setUseBinaryProtocol(true);
         basicParams[i].setDeviceIsRadar(false); // Default
-        basicParams[i].setUseSaftyPasWD(false); // Default
+        basicParams[i].setUseSafetyPasWD(false); // Default
+        basicParams[i].setEncoderMode(-1); // Default
+        basicParams[i].setScanMirroredAndShifted(false);
       }
 
       if (basicParams[i].getScannerName().compare(SICK_SCANNER_RMS_3XX_NAME) == 0) // Radar
@@ -469,9 +546,34 @@ namespace sick_scan
         basicParams[i].setExpectedFrequency(0.00);
         basicParams[i].setUseBinaryProtocol(false); // use ASCII-Protocol
         basicParams[i].setDeviceIsRadar(true); // Device is a radar
-
+        basicParams[i].setUseSafetyPasWD(false); // Default
+        basicParams[i].setEncoderMode(-1); // Default
+        basicParams[i].setScanMirroredAndShifted(false);
       }
-
+      if (basicParams[i].getScannerName().compare(SICK_SCANNER_NAV_3XX_NAME) == 0) // Nav 3xx
+      {
+        basicParams[i].setNumberOfMaximumEchos(1);
+        basicParams[i].setNumberOfLayers(1);
+        basicParams[i].setNumberOfShots(2880);
+        basicParams[i].setAngularDegreeResolution(0.750);
+        basicParams[i].setExpectedFrequency(55.0);
+        basicParams[i].setUseBinaryProtocol(true);
+        basicParams[i].setDeviceIsRadar(false); // Default
+        basicParams[i].setScanMirroredAndShifted(true);
+      }
+      if (basicParams[i].getScannerName().compare(SICK_SCANNER_NAV_2XX_NAME) == 0) // NAV_2xx - 1 Layer
+      {
+        basicParams[i].setNumberOfMaximumEchos(1);
+        basicParams[i].setNumberOfLayers(1);
+        basicParams[i].setNumberOfShots(1081);
+        basicParams[i].setAngularDegreeResolution(0.5);
+        basicParams[i].setExpectedFrequency(25.0);
+        basicParams[i].setUseBinaryProtocol(true);
+        basicParams[i].setDeviceIsRadar(false); // Default
+        basicParams[i].setUseSafetyPasWD(false); // Default
+        basicParams[i].setEncoderMode(-1); // Default
+        basicParams[i].setScanMirroredAndShifted(false);
+      }
       if (basicParams[i].getScannerName().compare(SICK_SCANNER_TIM_4XX_NAME) == 0) // TiM433 and TiM443
       {
         basicParams[i].setNumberOfMaximumEchos(1);
@@ -481,6 +583,9 @@ namespace sick_scan
         basicParams[i].setExpectedFrequency(15.0);
         basicParams[i].setUseBinaryProtocol(true);
         basicParams[i].setDeviceIsRadar(false); // Default
+        basicParams[i].setUseSafetyPasWD(false); // Default
+        basicParams[i].setEncoderMode(-1); // Default
+        basicParams[i].setScanMirroredAndShifted(false);
       }
     }
 

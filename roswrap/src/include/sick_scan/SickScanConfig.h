@@ -244,16 +244,17 @@ class DEFAULT
         if("frame_id"==(*_i)->name){frame_id = boost::any_cast<std::string>(val);}
         if("imu_frame_id"==(*_i)->name){imu_frame_id = boost::any_cast<std::string>(val);}
         if("time_offset"==(*_i)->name){time_offset = boost::any_cast<double>(val);}
+        if("sw_pll_only_publish"==(*_i)->name){sw_pll_only_publish = boost::any_cast<bool>(val);}
         if("auto_reboot"==(*_i)->name){auto_reboot = boost::any_cast<bool>(val);}
         if("filter_echos"==(*_i)->name){filter_echos = boost::any_cast<int>(val);}
         if("powerOnCount"==(*_i)->name){powerOnCount = boost::any_cast<int>(val);}
         if("operationHours"==(*_i)->name){operationHours = boost::any_cast<double>(val);}
         if("locationName"==(*_i)->name){locationName = boost::any_cast<std::string>(val);}
         if("timelimit"==(*_i)->name){timelimit = boost::any_cast<double>(val);}
-        if("sopas_protocol_type"==(*_i)->name){sopas_protocol_type = boost::any_cast<bool>(val);}
         if("cloud_output_mode"==(*_i)->name){cloud_output_mode = boost::any_cast<int>(val);}
         if("ang_res"==(*_i)->name){ang_res = boost::any_cast<double>(val);}
         if("scan_freq"==(*_i)->name){scan_freq = boost::any_cast<double>(val);}
+        if("encoder_mode"==(*_i)->name){encoder_mode = boost::any_cast<int>(val);}
       }
     }
 
@@ -265,16 +266,17 @@ int skip;
 std::string frame_id;
 std::string imu_frame_id;
 double time_offset;
+bool sw_pll_only_publish;
 bool auto_reboot;
 int filter_echos;
 int powerOnCount;
 double operationHours;
 std::string locationName;
 double timelimit;
-bool sopas_protocol_type;
 int cloud_output_mode;
 double ang_res;
 double scan_freq;
+int encoder_mode;
 
     bool state;
     std::string name;
@@ -301,6 +303,8 @@ double scan_freq;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double time_offset;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      bool sw_pll_only_publish;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       bool auto_reboot;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       int filter_echos;
@@ -313,13 +317,13 @@ double scan_freq;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double timelimit;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      bool sopas_protocol_type;
-//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       int cloud_output_mode;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double ang_res;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       double scan_freq;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      int encoder_mode;
 //#line 228 "/opt/ros/melodic/share/dynamic_reconfigure/cmake/../templates/ConfigType.h.template"
 
     bool __fromMessage__(dynamic_reconfigure::Config &msg)
@@ -459,9 +463,9 @@ double scan_freq;
     {
 SickScanConfig::GroupDescription<SickScanConfig::DEFAULT, SickScanConfig> Default("Default", "", 0, 0, true, &SickScanConfig::groups);
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __min__.min_ang = -3.14159265359;
+      __min__.min_ang = -6.28318530718;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __max__.min_ang = 3.14159265359;
+      __max__.min_ang = 6.28318530718;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.min_ang = -3.14159265359;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
@@ -469,9 +473,9 @@ SickScanConfig::GroupDescription<SickScanConfig::DEFAULT, SickScanConfig> Defaul
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(SickScanConfig::AbstractParamDescriptionConstPtr(new SickScanConfig::ParamDescription<double>("min_ang", "double", 0, "The angle of the first range measurement [rad].", "", &SickScanConfig::min_ang)));
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __min__.max_ang = -3.14159265359;
+      __min__.max_ang = -6.28318530718;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __max__.max_ang = 3.14159265359;
+      __max__.max_ang = 6.28318530718;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.max_ang = 3.14159265359;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
@@ -533,11 +537,21 @@ SickScanConfig::GroupDescription<SickScanConfig::DEFAULT, SickScanConfig> Defaul
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.time_offset = 0.25;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.time_offset = -0.001;
+      __default__.time_offset = -0.0;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.abstract_parameters.push_back(SickScanConfig::AbstractParamDescriptionConstPtr(new SickScanConfig::ParamDescription<double>("time_offset", "double", 0, "An offset to add to the time stamp before publication of a scan [s].", "", &SickScanConfig::time_offset)));
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(SickScanConfig::AbstractParamDescriptionConstPtr(new SickScanConfig::ParamDescription<double>("time_offset", "double", 0, "An offset to add to the time stamp before publication of a scan [s].", "", &SickScanConfig::time_offset)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.sw_pll_only_publish = 0;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.sw_pll_only_publish = 1;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.sw_pll_only_publish = 0;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(SickScanConfig::AbstractParamDescriptionConstPtr(new SickScanConfig::ParamDescription<bool>("sw_pll_only_publish", "bool", 0, "Publishes datagrams only if the software time synchronization is locked. This prevents leaps in the scan timestamps.", "", &SickScanConfig::sw_pll_only_publish)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(SickScanConfig::AbstractParamDescriptionConstPtr(new SickScanConfig::ParamDescription<bool>("sw_pll_only_publish", "bool", 0, "Publishes datagrams only if the software time synchronization is locked. This prevents leaps in the scan timestamps.", "", &SickScanConfig::sw_pll_only_publish)));
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.auto_reboot = 0;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
@@ -599,25 +613,15 @@ SickScanConfig::GroupDescription<SickScanConfig::DEFAULT, SickScanConfig> Defaul
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(SickScanConfig::AbstractParamDescriptionConstPtr(new SickScanConfig::ParamDescription<double>("timelimit", "double", 0, "Network time limit for datagram request [sec].", "", &SickScanConfig::timelimit)));
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __min__.sopas_protocol_type = 0;
-//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __max__.sopas_protocol_type = 1;
-//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __default__.sopas_protocol_type = 1;
-//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(SickScanConfig::AbstractParamDescriptionConstPtr(new SickScanConfig::ParamDescription<bool>("sopas_protocol_type", "bool", 0, "Force usage of binary protocol if true or ASCII if false, if not set default protokol is used.", "", &SickScanConfig::sopas_protocol_type)));
-//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(SickScanConfig::AbstractParamDescriptionConstPtr(new SickScanConfig::ParamDescription<bool>("sopas_protocol_type", "bool", 0, "Force usage of binary protocol if true or ASCII if false, if not set default protokol is used.", "", &SickScanConfig::sopas_protocol_type)));
-//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.cloud_output_mode = 0;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __max__.cloud_output_mode = 2;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __default__.cloud_output_mode = 0;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      Default.abstract_parameters.push_back(SickScanConfig::AbstractParamDescriptionConstPtr(new SickScanConfig::ParamDescription<int>("cloud_output_mode", "int", 0, "[0] Pointcloud is dense all layers in one cloud,[1] everey layer in different cloud to im prove timestamping accuracy,[2] layers are split to aceive aprox 1 kHz data rate", "", &SickScanConfig::cloud_output_mode)));
+      Default.abstract_parameters.push_back(SickScanConfig::AbstractParamDescriptionConstPtr(new SickScanConfig::ParamDescription<int>("cloud_output_mode", "int", 0, "[0] Pointcloud is dense all layers in one cloud,[1] Each layer in its own cloud message to improve timestamp accuracy,[2] layers are split to achieve approx. 1 KHz data rate", "", &SickScanConfig::cloud_output_mode)));
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
-      __param_descriptions__.push_back(SickScanConfig::AbstractParamDescriptionConstPtr(new SickScanConfig::ParamDescription<int>("cloud_output_mode", "int", 0, "[0] Pointcloud is dense all layers in one cloud,[1] everey layer in different cloud to im prove timestamping accuracy,[2] layers are split to aceive aprox 1 kHz data rate", "", &SickScanConfig::cloud_output_mode)));
+      __param_descriptions__.push_back(SickScanConfig::AbstractParamDescriptionConstPtr(new SickScanConfig::ParamDescription<int>("cloud_output_mode", "int", 0, "[0] Pointcloud is dense all layers in one cloud,[1] Each layer in its own cloud message to improve timestamp accuracy,[2] layers are split to achieve approx. 1 KHz data rate", "", &SickScanConfig::cloud_output_mode)));
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __min__.ang_res = 0.0;
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
@@ -638,6 +642,16 @@ SickScanConfig::GroupDescription<SickScanConfig::DEFAULT, SickScanConfig> Defaul
       Default.abstract_parameters.push_back(SickScanConfig::AbstractParamDescriptionConstPtr(new SickScanConfig::ParamDescription<double>("scan_freq", "double", 0, "Scan frequency set to 0 to use scanner default", "", &SickScanConfig::scan_freq)));
 //#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       __param_descriptions__.push_back(SickScanConfig::AbstractParamDescriptionConstPtr(new SickScanConfig::ParamDescription<double>("scan_freq", "double", 0, "Scan frequency set to 0 to use scanner default", "", &SickScanConfig::scan_freq)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __min__.encoder_mode = -1;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __max__.encoder_mode = 3;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __default__.encoder_mode = -1;
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      Default.abstract_parameters.push_back(SickScanConfig::AbstractParamDescriptionConstPtr(new SickScanConfig::ParamDescription<int>("encoder_mode", "int", 0, "-1:No Encoder, 0:Off, 1:Single increment, 2:Direction Phase, 3:Direction Level", "", &SickScanConfig::encoder_mode)));
+//#line 291 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
+      __param_descriptions__.push_back(SickScanConfig::AbstractParamDescriptionConstPtr(new SickScanConfig::ParamDescription<int>("encoder_mode", "int", 0, "-1:No Encoder, 0:Off, 1:Single increment, 2:Direction Phase, 3:Direction Level", "", &SickScanConfig::encoder_mode)));
 //#line 246 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"
       Default.convertParams();
 //#line 246 "/opt/ros/melodic/lib/python2.7/dist-packages/dynamic_reconfigure/parameter_generator_catkin.py"

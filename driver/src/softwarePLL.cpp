@@ -16,8 +16,8 @@ File: softwarePLL.cpp
 #include <string>
 
 
-const double SoftwarePLL::MaxAllowedTimeDeviation = 0.001;
-const uint32_t SoftwarePLL::MaxExtrapolationCounter = 5;
+const double SoftwarePLL::MaxAllowedTimeDeviation = 0.1;
+const uint32_t SoftwarePLL::MaxExtrapolationCounter = 20;
 
 // Helper class for reading csv file with test data
 
@@ -89,8 +89,8 @@ bool SoftwarePLL::pushIntoFifo(double curTimeStamp, uint32_t curtick)
 
 double SoftwarePLL::extraPolateRelativeTimeStamp(uint32_t tick)
 {
-  uint32_t tempTick = tick;
-  tempTick -= (uint32_t) (0xFFFFFFFF & FirstTick());
+  int32_t tempTick = 0;
+  tempTick = tick - (uint32_t) (0xFFFFFFFF & FirstTick());
   double timeDiff = tempTick * this->InterpolationSlope();
   return (timeDiff);
 
@@ -124,50 +124,59 @@ int SoftwarePLL::findDiffInFifo(double diff, double tol)
 */
 bool SoftwarePLL::updatePLL(uint32_t sec, uint32_t nanoSec, uint32_t curtick)
 {
-  double start = sec + nanoSec * 1E-9;
-  bool bRet = true;
-
-  if (false == IsInitialized())
+  if (curtick != this->lastcurtick)
   {
-    pushIntoFifo(start, curtick);
-    bool bCheck = this->updateInterpolationSlope();
-    if (bCheck)
-    {
-      IsInitialized(true);
-    }
-  }
+    this->lastcurtick = curtick;
+    double start = sec + nanoSec * 1E-9;
+    bool bRet = true;
 
-  if (IsInitialized() == false)
+    if (false == IsInitialized())
+    {
+      pushIntoFifo(start, curtick);
+      bool bCheck = this->updateInterpolationSlope();
+      if (bCheck)
+      {
+        IsInitialized(true);
+      }
+    }
+
+    if (IsInitialized() == false)
+    {
+      return (false);
+    }
+
+    double relTimeStamp = extraPolateRelativeTimeStamp(curtick); // evtl. hier wg. Ueberlauf noch einmal pruefen
+    double cmpTimeStamp = start - this->FirstTimeStamp();
+
+    bool timeStampVerified = false;
+    if (nearSameTimeStamp(relTimeStamp, cmpTimeStamp) == true)// if timestamp matches prediction update FIFO
+    {
+      timeStampVerified = true;
+      pushIntoFifo(start, curtick);
+      updateInterpolationSlope();
+      ExtrapolationDivergenceCounter(0);
+    }
+
+    if (timeStampVerified == false)
+    {
+      // BEGIN HANDLING Extrapolation divergence
+      uint32_t tmp = ExtrapolationDivergenceCounter();
+      tmp++;
+      ExtrapolationDivergenceCounter(tmp);
+      if (ExtrapolationDivergenceCounter() >= SoftwarePLL::MaxExtrapolationCounter)
+      {
+        IsInitialized(false); // reset FIFO - maybe happened due to abrupt change of time base
+      }
+      // END HANDLING Extrapolation divergence
+    }
+    return (true);
+  }
+  else
   {
     return (false);
+    //this curtick has been updated allready
   }
 
-  double relTimeStamp = extraPolateRelativeTimeStamp(curtick); // evtl. hier wg. Ueberlauf noch einmal pruefen
-  double cmpTimeStamp = start - this->FirstTimeStamp();
-
-  bool timeStampVerified = false;
-  if (nearSameTimeStamp(relTimeStamp, cmpTimeStamp) == true)// if timestamp matches prediction update FIFO
-  {
-    timeStampVerified = true;
-    pushIntoFifo(start, curtick);
-    updateInterpolationSlope();
-    ExtrapolationDivergenceCounter(0);
-  }
-
-  if (timeStampVerified == false)
-  {
-    // BEGIN HANDLING Extrapolation divergence
-    uint32_t tmp = ExtrapolationDivergenceCounter();
-    tmp++;
-    ExtrapolationDivergenceCounter(tmp);
-    if (ExtrapolationDivergenceCounter() >= SoftwarePLL::MaxExtrapolationCounter)
-    {
-      IsInitialized(false); // reset FIFO - maybe happened due to abrupt change of time base
-    }
-    // END HANDLING Extrapolation divergence
-  }
-
-  return (true);
 }
 
 //TODO Kommentare
@@ -317,7 +326,7 @@ void SoftwarePLL::testbed()
   if (testWithDataFile)
   {
     // commented for trusty bRet = testPll.getDemoFileData("/home/rosuser/dumpimu3.csv", tickVec, secVec, nanoSecVec);
-    maxLoop = (int)tickVec.size();
+    maxLoop = tickVec.size();
   }
 
   for (int i = 0; i < maxLoop; i++)

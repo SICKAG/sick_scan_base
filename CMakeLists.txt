@@ -27,7 +27,7 @@ add_definitions(-DHAVE_STRUCT_TIMESPEC -DROSSIMU)
 
 if(WIN32)
 # include_directories(roswrap/pthread_win/pthreads-w32-2-9-1-release/pthreads.2 roswrap/helper_win ./include ./include/tinyxml ./include/sick_scan ${Boost_INCLUDE_DIRS} roswrap/src/include roswrap/src/rossimu/kinetic/include roswrap/src/cfgsimu roswrap/src/toojpeg )
-include_directories(C:/Users/micha/Documents/development/vcpkg/installed/x64-windows/include roswrap/helper_win ./include ./include/tinyxml ./include/sick_scan ${Boost_INCLUDE_DIRS} roswrap/src/include roswrap/src/rossimu/kinetic/include roswrap/src/cfgsimu roswrap/src/toojpeg )
+include_directories(roswrap/helper_win ./include ./include/tinyxml ./include/sick_scan ${Boost_INCLUDE_DIRS} roswrap/src/include roswrap/src/rossimu/kinetic/include roswrap/src/cfgsimu roswrap/src/toojpeg )
 else()
 include_directories(./include/sick_scan ./include ./include/tinyxml ../include/sick_scan ${Boost_INCLUDE_DIRS} roswrap/src/include roswrap/src/rossimu/kinetic/include roswrap/src/cfgsimu roswrap/src/toojpeg)
 endif()
@@ -71,18 +71,21 @@ add_executable(sick_generic_caller
 	driver/src/tcp/errorhandler.cpp
 	driver/src/tcp/Mutex.cpp
 	driver/src/tcp/SickThread.cpp
-	driver/src/sick_generic_radar.cpp
+	# driver/src/sick_generic_radar.cpp
 	driver/src/softwarePLL.cpp
 	driver/src/sick_generic_imu.cpp
 	driver/src/tcp/tcp.cpp
 	driver/src/tcp/toolbox.cpp
+
+	driver/src/softwarePLL.cpp
+
+	driver/src/helper/angle_compensator.cpp
     roswrap/src/launchparser/launchparser.cpp roswrap/src/include/launchparser/launchparser.h
 	${SRC_WIN_FILES}
 	)
 	
 if(WIN32)
 message("### Compiled for Windows x64")
-# target_link_libraries(sick_generic_caller ${Boost_LIBRARIES}  C:/Users/micha/Documents/development/vcpkg/packages/pthreads_x64-windows/lib/pthreadVC3.lib)
 target_link_libraries(sick_generic_caller ${Boost_LIBRARIES} )
 else()
 target_link_libraries(sick_generic_caller ${Boost_LIBRARIES} pthread)

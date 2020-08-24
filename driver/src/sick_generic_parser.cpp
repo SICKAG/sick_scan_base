@@ -58,7 +58,7 @@
 #include <sick_scan/sick_scan_common.h>
 #include <ros/ros.h>
 
-#ifdef _MSC_VER
+#ifdef ROSSIMU
 #include "sick_scan/rosconsole_simu.hpp"
 #endif
 

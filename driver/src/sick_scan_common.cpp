@@ -147,7 +147,7 @@ std::vector<unsigned char> stringToVector(std::string s)
 */
 static int getDiagnosticErrorCode() // workaround due to compiling error under Visual C++
 {
-#ifdef _MSC_VER
+#ifdef ROSSIMU
 #undef ERROR
   return(2);
 #else
@@ -349,7 +349,7 @@ namespace sick_scan
 
     setSensorIsRadar(false);
     init_cmdTables();
-#ifndef _MSC_VER
+#ifndef ROSSIMU
     dynamic_reconfigure::Server<sick_scan::SickScanConfig>::CallbackType f;
     f = boost::bind(&sick_scan::SickScanCommon::update_config, this, _1, _2);
     dynamic_reconfigure_server_.setCallback(f);
@@ -388,7 +388,7 @@ namespace sick_scan
     cloud_pub_ = nh_.advertise<sensor_msgs::PointCloud2>(cloud_topic_val, 100);
 
 
-#ifndef _MSC_VER
+#ifndef ROSSIMU
     // just for debugging, but very helpful for the start
     cloud_radar_rawtarget_pub_ = nh_.advertise<sensor_msgs::PointCloud2>("cloud_radar_rawtarget", 100);
     cloud_radar_track_pub_ = nh_.advertise<sensor_msgs::PointCloud2>("cloud_radar_track", 100);
@@ -2777,7 +2777,7 @@ namespace sick_scan
       if (true == deviceIsRadar)
       {
           int errorCode = ExitSuccess;
-#ifndef _MSC_VER
+#ifndef ROSSIMU
         SickScanRadarSingleton *radar = SickScanRadarSingleton::getInstance();
         // parse radar telegram and send pointcloud2-debug messages
         errorCode = radar->parseDatagram(recvTimeStamp, (unsigned char *) receiveBuffer, actual_length,

@@ -720,9 +720,9 @@ SickScanConfig::GroupDescription<SickScanConfig::DEFAULT, SickScanConfig> Defaul
 
     if (statics) // Common case
       return statics;
-
+#ifndef ROSSIMU
     boost::mutex::scoped_lock lock(dynamic_reconfigure::__init_mutex__);
-
+#endif
     if (statics) // In case we lost a race.
       return statics;
 

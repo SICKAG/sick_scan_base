@@ -11,6 +11,10 @@ This driver should work with all of the following products.
 |--------------------|------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|:---------------:|
 | MRS1104            | [1081208](https://www.sick.com/sg/en/detection-and-ranging-solutions/3d-lidar-sensors/mrs1000/mrs1104c-111011/p/p495044)         | 4 layer max. range: 64 m, ang. resol. 0.25 [deg] hor., 2.50 [deg] ver.                                         | ✔ [stable]|
 |                    |                                                                                                                                  | Scan-Rate: 50 Hz, 4x12.5 Hz            |                 |
+| TiM433             | prototype  | 1 layer range: 0.05 m ... 15 m, ang. resol. 0.33 [deg], 240 [deg]| ✔ [prototype]|
+|                    |                                                                                                                                  | Scan-Rate: 15.0 Hz   |                 |
+| TiM443             | prototype  | 1 layer range: 0.05 m ... 15 m, ang. resol. 0.33 [deg], 240 [deg]| ✔ [prototype]|
+|                    |                                                                                                                                  | Scan-Rate: 15.0 Hz   |                 |
 | TiM551             | [1060445](https://www.sick.com/de/en/detection-and-ranging-solutions/2d-lidar-sensors/tim5xx/tim551-2050001/p/p343045)                 | 1 layer max. range: 10 m, ang. resol. 1.00[deg] | ✔ [stable]|
 |                    |                                                                                                                                  | Scan-Rate: 15 Hz   |                 |
 | TiM561             | [1071419](https://www.sick.com/de/en/detection-and-ranging-solutions/2d-lidar-sensors/tim5xx/tim561-2050101/p/p369446)                 | 1 layer max. range: 10 m, ang. resol. 0.33 [deg]| ✔ [stable]|
@@ -102,6 +106,9 @@ sick_scan
 SICK LiDAR
 SICK Laser
 SICK Laserscanner
+TiM4xx
+TiM433
+TiM443
 TiM5xx
 TiM551
 TiM561

@@ -401,7 +401,7 @@ namespace sick_scan
     // scan publisher
     pub_ = nh_.advertise<sensor_msgs::LaserScan>("scan", 1000);
 
-#ifndef _MSC_VER
+#ifndef ROSSIMU
     diagnostics_.setHardwareID("none");   // set from device after connection
     diagnosticPub_ = new diagnostic_updater::DiagnosedPublisher<sensor_msgs::LaserScan>(pub_, diagnostics_,
         // frequency should be target +- 10%.
@@ -3764,76 +3764,6 @@ namespace sick_scan
 
                 float *ptr = (float *) cloudDataPtr;
 
-                int xic = 400;
-                int yic = 400;
-                int w2i = 400;
-                int h2i = 400;
-                int hi = h2i * 2 + 1;
-                int wi = w2i * 2 + 1;
-                int pixNum = hi * wi;
-                int numColorChannel = 3;
-                unsigned char *pixel = (unsigned char *) malloc(numColorChannel * hi * wi);
-                memset(pixel, 0, pixNum);
-                double scaleFac = 50.0;
-
-                for (int i = 0; i < hi; i++)
-                {
-                  int pixAdr = numColorChannel * (i * wi + xic);
-                  pixel[pixAdr] = 0x40;
-                  pixel[pixAdr + 1] = 0x40;
-                  pixel[pixAdr + 2] = 0x40;
-                }
-                for (int i = 0; i < wi; i++)
-                {
-                  int pixAdr = numColorChannel * (yic * wi + i);
-                  pixel[pixAdr] = 0x40;
-                  pixel[pixAdr + 1] = 0x40;
-                  pixel[pixAdr + 2] = 0x40;
-                }
-                for (int i = 0; i < numShots; i++)
-                {
-                  double x, y, z, intensity;
-                  x = ptr[0];
-                  y = ptr[1];
-                  z = ptr[2];
-                  intensity = ptr[3];
-                  ptr += 4;
-                  int xi = (x * scaleFac) + xic;
-                  int yi = (y * scaleFac) + yic;
-                  if ((xi >= 0) && (xi < wi))
-                  {
-                    if ((yi >= 0) && (xi < hi))
-                    {
-                      int pixAdr = numColorChannel * (xi * wi + yi);
-                      int layer = i / w;
-                      unsigned char color[3] = {0x00};
-                      switch (layer)
-                      {
-                        case 0:
-                          color[0] = 0xFF;
-                          break;
-                        case 1:
-                          color[1] = 0xFF;
-                          break;
-                        case 2:
-                          color[2] = 0xFF;
-                          break;
-                        case 3:
-                          color[0] = 0xFF;
-                          color[1] = 0xFF;
-                          break;
-                      }
-
-                      for (int kk = 0; kk < 3; kk++)
-                      {
-                        pixel[pixAdr + kk] = color[kk];
-
-                      }
-                    }
-                  }
-
-                }
-
                 if (cnt == 25)
                 {
 				  char jpgFileName_tmp[255] = { 0 };
@@ -3842,6 +3772,82 @@ namespace sick_scan
 #else
 				  strcpy(jpgFileName_tmp , "..\\demo\\scan.jpg_tmp");
 #endif
+                  int xic = 400;
+                  int yic = 400;
+                  int w2i = 400;
+                  int h2i = 400;
+                  int hi = h2i * 2 + 1;
+                  int wi = w2i * 2 + 1;
+                  int pixNum = hi * wi;
+                  int numColorChannel = 3;
+                  unsigned char *pixel = (unsigned char *) malloc(numColorChannel * hi * wi);
+                  memset(pixel, 0, numColorChannel * pixNum);
+                  double scaleFac = 50.0;
+
+                  for (int i = 0; i < hi; i++)
+                  {
+                    int pixAdr = numColorChannel * (i * wi + xic);
+                    pixel[pixAdr] = 0x40;
+                    pixel[pixAdr + 1] = 0x40;
+                    pixel[pixAdr + 2] = 0x40;
+                  }
+                  for (int i = 0; i < wi; i++)
+                  {
+                    int pixAdr = numColorChannel * (yic * wi + i);
+                    pixel[pixAdr] = 0x40;
+                    pixel[pixAdr + 1] = 0x40;
+                    pixel[pixAdr + 2] = 0x40;
+                  }
+
+                  scaleFac *= -1.0;
+                  for (int i = 0; i < numShots; i++)
+                  {
+                    double x, y, z, intensity;
+                    x = ptr[0];
+                    y = ptr[1];
+                    z = ptr[2];
+                    intensity = ptr[3];
+                    ptr += 4;
+                    int xi = (x * scaleFac) + xic;
+                    int yi = (y * scaleFac) + yic;
+                    if ((xi >= 0) && (xi < wi))
+                    {
+                      if ((yi >= 0) && (xi < hi))
+                      {
+                        // yi shows left (due to neg. scaleFac)
+                        // xi shows up (due to neg. scaleFac)
+                        int pixAdr = numColorChannel * (xi * wi + yi);
+                        int layer = i / w;
+                        unsigned char color[3] = {0x00};
+                        switch (layer)
+                        {
+                          case 0:
+                            color[0] = 0xFF;
+                            break;
+                          case 1:
+                            color[1] = 0xFF;
+                            break;
+                          case 2:
+                            color[2] = 0xFF;
+                            break;
+                          case 3:
+                            color[0] = 0xFF;
+                            color[1] = 0xFF;
+                            break;
+                        }
+
+                        for (int kk = 0; kk < 3; kk++)
+                        {
+                          pixel[pixAdr + kk] = color[kk];
+
+                        }
+                      }
+                    }
+
+                  }
+
+
+
                   // Write JPEG Scan Top View
                   foutJpg = fopen(jpgFileName_tmp, "wb");
                   if (foutJpg == NULL)
@@ -3852,6 +3858,8 @@ namespace sick_scan
                   {
                   TooJpeg::writeJpeg(jpegOutputCallback, pixel, wi, hi, true, 99);
                   fclose(foutJpg);
+
+                  free(pixel);
 
 #if linux				  
 				  rename(jpgFileName_tmp, "./demo/scan.jpg");
@@ -3913,7 +3921,7 @@ namespace sick_scan
                   }
                   cnt = 0;
                 }
-                free(pixel);
+
 #else
                 if (config_.cloud_output_mode==0)
                 {

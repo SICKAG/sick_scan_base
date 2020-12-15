@@ -7,21 +7,24 @@ cmake_minimum_required(VERSION 2.8.3)
 project(sick_scan_base)
 
 set(CMAKE_BUILD_TYPE Debug)
-if(WIN32)
-# ---------- Find Boost Headers/Libraries -----------------------
-SET (Boost_FIND_REQUIRED TRUE)
-SET (Boost_FIND_QUIETLY TRUE)
-SET (Boost_DEBUG FALSE)
-set (Boost_USE_MULTITHREADED TRUE)
-set (Boost_USE_STATIC_LIBS TRUE)
-SET (Boost_ADDITIONAL_VERSIONS "1.65" "1.65.1")
 
-set(Boost_INCLUDE_DIR $ENV{USERPROFILE}/Documents/development/boost_1_65_1)
-set(Boost_DIR $ENV{USERPROFILE}/Documents/development/boost_1_65_1)
-set(Boost_LIBRARY_DIR $ENV{USERPROFILE}/Documents/development/boost_1_65_1/stage/lib)
+
+macro(dump_all)
+	get_cmake_property(_variableNames VARIABLES)
+	list (SORT _variableNames)
+	foreach (_variableName ${_variableNames})
+		message(STATUS "${_variableName}=${${_variableName}}")
+	endforeach()
+endmacro()
+
+if(WIN32)
+FIND_PACKAGE			(Boost REQUIRED)
+FIND_PACKAGE            (pthread REQUIRED)
+# dump_all()
 endif()
 
 find_package(Boost COMPONENTS system filesystem thread REQUIRED)
+include_directories		(${Boost_INCLUDE_DIR})
 
 add_definitions(-DHAVE_STRUCT_TIMESPEC -DROSSIMU)
 
@@ -33,7 +36,7 @@ include_directories(./include/sick_scan ./include ./include/tinyxml ../include/s
 endif()
 
 
-LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
+LINK_DIRECTORIES(${Boost_LIBRARY_DIRS} )
 
 
 if(WIN32)
@@ -85,8 +88,9 @@ add_executable(sick_generic_caller
 	)
 	
 if(WIN32)
-message("### Compiled for Windows x64")
-target_link_libraries(sick_generic_caller ${Boost_LIBRARIES} )
+message("### Compiled for Windows")
+message(STATUS "PTHREAD: " ${PThreads_windows_LIBRARY})
+target_link_libraries(sick_generic_caller ${Boost_LIBRARIES} ${PThreads_windows_LIBRARY})
 else()
 target_link_libraries(sick_generic_caller ${Boost_LIBRARIES} pthread)
 endif()

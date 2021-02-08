@@ -173,6 +173,11 @@ int main(int argc, char **argv)
   {
     if (strstr(argv_tmp[i], nameId) == argv_tmp[i])
     {
+      if(strlen(argv_tmp[i] + strlen(nameId)) >= MAX_NAME_LEN){
+        ROS_ERROR("Program arguments: %s is too long.\n", nameId);
+        exit(-1);
+      }
+
       strcpy(nameVal, argv_tmp[i] + strlen(nameId));
       scannerName = nameVal;
     }

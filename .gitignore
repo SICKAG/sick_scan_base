@@ -52,3 +52,9 @@ scan.jpg
 scan_tmp.jpg
 
 build/
+build_x64/
+
+sick_scan_base_vs.code-workspace
+test/emulator/scandata/20210302_lms511.pcapng.json
+
+.vscode/

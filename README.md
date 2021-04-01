@@ -31,25 +31,72 @@ This driver should work with all of the following products.
 |                    |                                                                                                                                  | Scan-Rate: 600 Hz   |                 |
 ## Installation
 
-To install, follow the steps below:
+### Windows installation
 
-1. clone repository
-```console
-git clone https://github.com/SICKAG/sick_scan_base.git
-```
-2. create Makefile by using cmake
-```console
-cd sick_scan_base
-cmake .
-```
-3. compile the software
+To install sick_scan_base on Windows, follow the steps below:
 
-```console
-make
-```
+1. If not yet done, install Visual Studio. Visual Studio 2019 Community or Professional Edition is recommended.
 
+2. If not yet done, install boost and pthread using Visual Studios package manager vcpkg:
+   * Install vcpkg:
+      * Download vcpkg-master.zip from https://github.com/microsoft/vcpkg/archive/master.zip and unzip to `c:\vcpkg`. Alternatively, run "git clone https://github.com/microsoft/vcpkg"
+      * Install vcpkg by running the following commands:
+         ```
+        cd c:/vcpkg
+        .\bootstrap-vcpkg.bat
+        .\vcpkg integrate install
+        ```
+   * Install required packages:
+      ```
+     vcpkg.exe install pthread:x86-windows
+     vcpkg.exe install pthread:x64-windows
+     vcpkg.exe install boost:x64-windows
+     ```
+   * Include vcpkg in your path:
+      ```
+     set PATH=c:\vcpkg\installed\x64-windows\bin;%PATH%
+     ```
 
+3. Clone repository https://github.com/SICKAG/sick_scan_base:
+   ```
+   git clone https://github.com/SICKAG/sick_scan_base.git
+   ```
 
+4. Build sick_generic_caller with cmake and Visual Studio 2019:
+   ```
+   cd sick_scan_base
+   set _os=x64
+   set _cmake_string=Visual Studio 16 2019
+   set _msvc=Visual Studio 2019
+   set _cmake_build_dir=build
+   if not exist %_cmake_build_dir% mkdir %_cmake_build_dir%
+   pushd %_cmake_build_dir%
+   cmake -G "%_cmake_string%" ..
+   popd
+   ```
+   Open file `build\sick_scan_base.sln` in Visual Studio and build all targets (shortcut F7).
+
+### Ubuntu installation
+
+To install on Ubuntu, follow the steps below:
+
+1. Clone repository https://github.com/SICKAG/sick_scan_base:
+   ```console
+   git clone https://github.com/SICKAG/sick_scan_base.git
+   ```
+
+2. Build sick_generic_caller by using cmake
+   ```console
+   cd sick_scan_base
+   mkdir -p ./build
+   cd ./build
+   cmake -G "Unix Makefiles" ..
+   ```
+
+3. Compile the software and build sick_generic_caller:
+   ```console
+   make
+   ```
 
 ## Running
 
@@ -96,6 +143,44 @@ This driver supports the following x86-based operating systems:
 * Ubuntu 18.04 with gcc
 * Windows 10 with Visual Studio Compiler (VS2017, VS2019)
 
+## Simulation
+
+For unittests without sensor hardware, a LMS511 device can be simulated using the python script `test/emulator/test_server.py`. This script implements a simple tcp server for test purposes. It opens a listening tcp socket, connects to tcp clients, receives cola telegrams and sends predefined responses to the client. 
+
+Please note that this is just a simple test server for basic unittests of sick_scan_base drivers. It does not emulate any real lidar sensors!
+
+### Simulation on Windows
+
+Run script `run_simu_lms_5xx.cmd` in folder `test/scripts` or execute the following commands:
+
+```
+REM Start test server
+cd .\build
+start "testserver" python ../test/emulator/test_server.py --scandata_file=../test/emulator/scandata/20210302_lms511.pcapng.scandata.txt --scandata_frequency=20.0 --tcp_port=2112
+@timeout /t 1
+REM Run sick_generic_caller
+.\Debug\sick_generic_caller.exe ../launch/sick_lms_5xx.launch hostname:=127.0.0.1
+```
+
+Open file `image_viewer.html` in folder `demo` in your browser to view a jpg-image of the current scan.
+
+Note, that python version 3 incl. runtime dlls must be accessable, f.e. by extending the PATH environment variable:
+```
+set PYTHON_DIR=%ProgramFiles(x86)%/Microsoft Visual Studio/Shared/Python37_64
+set PATH=%PYTHON_DIR%;%PYTHON_DIR%/Scripts;c:\vcpkg\installed\x64-windows\bin;%PATH%
+```
+
+### Simulation on Linux
+
+Run script `run_simu_lms_5xx.bash` in folder `test/scripts` or execute the following commands:
+
+```
+python3 ./test/emulator/test_server.py --scandata_file=./test/emulator/scandata/20210302_lms511.pcapng.scandata.txt --scandata_frequency=20.0 --tcp_port=2112 &
+sleep 1
+./build_x64/sick_generic_caller ./launch/sick_lms_5xx.launch hostname:=127.0.0.1 &
+ ```
+
+Open file `image_viewer.html` in folder `demo` in a browser (f.e. firefox) to view a jpg-image of the current scan.
 
 ## Keywords
 

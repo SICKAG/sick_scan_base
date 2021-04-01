@@ -44,7 +44,7 @@
 #include <iomanip>
 #include <stdexcept>
 #include <limits>
-#ifdef _MSV_VER
+#if defined _MSV_VER || defined _MSC_VER
 #include <usleep.h>
 #endif
  // time related includes for macOS

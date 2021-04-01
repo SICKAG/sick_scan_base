@@ -18,21 +18,22 @@ macro(dump_all)
 endmacro()
 
 if(WIN32)
-FIND_PACKAGE			(Boost REQUIRED)
-FIND_PACKAGE            (pthread REQUIRED)
-# dump_all()
+    FIND_PACKAGE			(Boost REQUIRED)
+    # FIND_PACKAGE            (pthread REQUIRED) # pthread is found via boost
+    # dump_all()
 endif()
 
 find_package(Boost COMPONENTS system filesystem thread REQUIRED)
 include_directories		(${Boost_INCLUDE_DIR})
 
-add_definitions(-DHAVE_STRUCT_TIMESPEC -DROSSIMU)
+add_definitions(-DROSSIMU)
+# add_definitions(-DHAVE_STRUCT_TIMESPEC -DROSSIMU)
 
 if(WIN32)
-# include_directories(roswrap/pthread_win/pthreads-w32-2-9-1-release/pthreads.2 roswrap/helper_win ./include ./include/tinyxml ./include/sick_scan ${Boost_INCLUDE_DIRS} roswrap/src/include roswrap/src/rossimu/kinetic/include roswrap/src/cfgsimu roswrap/src/toojpeg )
-include_directories(roswrap/helper_win ./include ./include/tinyxml ./include/sick_scan ${Boost_INCLUDE_DIRS} roswrap/src/include roswrap/src/rossimu/kinetic/include roswrap/src/cfgsimu roswrap/src/toojpeg )
+    # include_directories(roswrap/pthread_win/pthreads-w32-2-9-1-release/pthreads.2 roswrap/helper_win ./include ./include/tinyxml ./include/sick_scan ${Boost_INCLUDE_DIRS} roswrap/src/include roswrap/src/rossimu/kinetic/include roswrap/src/cfgsimu roswrap/src/toojpeg )
+    include_directories(roswrap/helper_win ./include ./include/tinyxml ./include/sick_scan ${Boost_INCLUDE_DIRS} roswrap/src/include roswrap/src/rossimu/kinetic/include roswrap/src/cfgsimu roswrap/src/toojpeg )
 else()
-include_directories(./include/sick_scan ./include ./include/tinyxml ../include/sick_scan ${Boost_INCLUDE_DIRS} roswrap/src/include roswrap/src/rossimu/kinetic/include roswrap/src/cfgsimu roswrap/src/toojpeg)
+    include_directories(./include/sick_scan ./include ./include/tinyxml ../include/sick_scan ${Boost_INCLUDE_DIRS} roswrap/src/include roswrap/src/rossimu/kinetic/include roswrap/src/cfgsimu roswrap/src/toojpeg)
 endif()
 
 
@@ -45,7 +46,6 @@ else()
     file(GLOB SRC_WIN_FILES )
 endif()
 add_executable(sick_generic_caller
- 
 	roswrap/src/cfgsimu/sick_scan/time_modi.cpp
 	roswrap/src/rossimu/kinetic/src/rossimu.cpp
 	roswrap/src/rossimu/kinetic/src/duration.cpp
@@ -85,13 +85,16 @@ add_executable(sick_generic_caller
 	driver/src/helper/angle_compensator.cpp
     roswrap/src/launchparser/launchparser.cpp roswrap/src/include/launchparser/launchparser.h
 	${SRC_WIN_FILES}
-	)
+)
 	
 if(WIN32)
-message("### Compiled for Windows")
-message(STATUS "PTHREAD: " ${PThreads_windows_LIBRARY})
-target_link_libraries(sick_generic_caller ${Boost_LIBRARIES} ${PThreads_windows_LIBRARY})
+    message("### Compiled for Windows")
+    message(STATUS "PTHREAD: " ${PThreads_windows_LIBRARY})
+    target_link_libraries(sick_generic_caller ${Boost_LIBRARIES} ${PThreads_windows_LIBRARY})
 else()
-target_link_libraries(sick_generic_caller ${Boost_LIBRARIES} pthread)
+    target_link_libraries(sick_generic_caller ${Boost_LIBRARIES} pthread)
 endif()
 
+add_custom_target(python_test_server
+    SOURCES test/emulator/test_server.py
+)

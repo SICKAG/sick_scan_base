@@ -159,7 +159,7 @@ cd .\build
 start "testserver" python ../test/emulator/test_server.py --scandata_file=../test/emulator/scandata/20210302_lms511.pcapng.scandata.txt --scandata_frequency=20.0 --tcp_port=2112
 @timeout /t 1
 REM Run sick_generic_caller
-.\Debug\sick_generic_caller.exe ../launch/sick_lms_5xx.launch hostname:=127.0.0.1
+.\Debug\sick_generic_caller.exe ../launch/sick_lms_5xx.launch hostname:=127.0.0.1 sw_pll_only_publish:=False
 ```
 
 Open file `image_viewer.html` in folder `demo` in your browser to view a jpg-image of the current scan.
@@ -177,7 +177,7 @@ Run script `run_simu_lms_5xx.bash` in folder `test/scripts` or execute the follo
 ```
 python3 ./test/emulator/test_server.py --scandata_file=./test/emulator/scandata/20210302_lms511.pcapng.scandata.txt --scandata_frequency=20.0 --tcp_port=2112 &
 sleep 1
-./build_x64/sick_generic_caller ./launch/sick_lms_5xx.launch hostname:=127.0.0.1 &
+./build_x64/sick_generic_caller ./launch/sick_lms_5xx.launch hostname:=127.0.0.1 sw_pll_only_publish:=False &
  ```
 
 Open file `image_viewer.html` in folder `demo` in a browser (f.e. firefox) to view a jpg-image of the current scan.

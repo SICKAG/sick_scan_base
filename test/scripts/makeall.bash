@@ -5,7 +5,7 @@
 # 
 
 pushd ../..
-if [ -d ./build_x64 ] ; then rm -rf ./build_x64 ; fi
+if [ -d ./build ] ; then rm -rf ./build ; fi
 popd
 
 ./make.bash

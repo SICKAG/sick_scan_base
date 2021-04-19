@@ -15,7 +15,7 @@ popd
 
 python3 ./test/emulator/test_server.py --scandata_file=./test/emulator/scandata/20210302_lms511.pcapng.scandata.txt --scandata_frequency=20.0 --tcp_port=2112 &
 sleep 1
-./build_x64/sick_generic_caller ./launch/sick_lms_5xx.launch hostname:=127.0.0.1 &
+./build/sick_generic_caller ./launch/sick_lms_5xx.launch hostname:=127.0.0.1 sw_pll_only_publish:=False &
 
 sleep 60
 

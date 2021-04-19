@@ -8,9 +8,9 @@ pushd ../..
 BUILDLOGFILE=sick_scan_base_build.log
 ERRORLOGFILE=sick_scan_base_build_errors.log
 USECORES=4
-if [ ! -d ./build_x64 ] ; then mkdir -p ./build_x64 ; fi
+if [ ! -d ./build ] ; then mkdir -p ./build ; fi
 
-cd ./build_x64
+cd ./build
 rm -f $BUILDLOGFILE
 rm -f $ERRORLOGFILE
 cmake -G "Unix Makefiles" .. 2>&1 | tee -a $BUILDLOGFILE

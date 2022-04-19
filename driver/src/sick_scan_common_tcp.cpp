@@ -223,6 +223,7 @@ namespace sick_scan
 
     assert(this->getProtocolType() != CoLa_Unknown);
 
+    m_beVerbose = false;
     m_numberOfBytesInReceiveBuffer = 0;
     m_alreadyReceivedBytes = 0;
     this->setReplyMode(0);

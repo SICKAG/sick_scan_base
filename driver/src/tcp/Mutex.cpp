@@ -42,6 +42,7 @@ Mutex::Mutex()
 
 Mutex::~Mutex()
 {
+	pthread_mutex_destroy(&m_mutex);
 }
 
 void Mutex::lock()

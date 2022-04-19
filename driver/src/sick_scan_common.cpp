@@ -417,6 +417,9 @@ namespace sick_scan
     ROS_ASSERT(diagnosticPub_ != NULL);
 #else
     config_.time_offset = 0; // to avoid uninitialized variable
+    config_.cloud_output_mode = 1;
+    config_.intensity = true;
+    config_.sw_pll_only_publish = false;
 #endif
   }
 
